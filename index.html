@@ -3,73 +3,255 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sopy Online - Toko Customer</title>
+  <title>Sopy Online Shop - HD Interactive</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root { 
       --shopee-orange: #ee4d2d; 
       --shopee-dark-orange: #d73211;
       --shopee-bg: #f5f5f5; 
+      --shopee-gradient: linear-gradient(135deg, #ff5722 0%, #ee4d2d 100%);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--shopee-bg); color: #333; min-height: 100vh; padding-bottom: 140px; }
+    body { background-color: var(--shopee-bg); color: #333; min-height: 100vh; padding-bottom: 140px; overflow-x: hidden; }
 
+    /* --- ANIMASI HD CUSTOM --- */
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(238, 77, 45, 0.4); }
+      70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(238, 77, 45, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(238, 77, 45, 0); }
+    }
+
+    @keyframes floatWidget {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes shimmerEffect {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes fadeInSlideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- HEADER SEARCH BAR (PERSIS GAMBAR) --- */
     header {
-      background: var(--shopee-orange); color: white; padding: 12px 20px;
-      position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      background: var(--shopee-gradient);
+      padding: 10px 14px 12px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(238, 77, 45, 0.2);
     }
-    .brand { font-size: 18px; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-    
-    .nav-actions { display: flex; align-items: center; gap: 10px; }
-    .cart-btn { background: white; color: var(--shopee-orange); border: none; padding: 7px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; }
-    .admin-btn { 
-      background: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.5); 
-      padding: 7px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; 
-      display: flex; align-items: center; gap: 6px; font-size: 12px; transition: background 0.2s;
+    .top-search-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .admin-btn:hover { background: rgba(255, 255, 255, 0.35); }
+    .search-box {
+      flex: 1;
+      background: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      gap: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    .search-box:focus-within {
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .search-box i.fa-magnifying-glass { color: var(--shopee-orange); font-size: 15px; }
+    .search-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 13px;
+      color: #333;
+    }
+    .search-box i.fa-camera { color: #888; font-size: 15px; cursor: pointer; transition: transform 0.2s; }
+    .search-box i.fa-camera:hover { transform: scale(1.1); color: var(--shopee-orange); }
 
-    .container { max-width: 900px; margin: 20px auto; padding: 0 12px; }
+    .header-icons { display: flex; align-items: center; gap: 14px; color: white; font-size: 20px; }
+    .icon-badge-wrapper { position: relative; cursor: pointer; text-decoration: none; color: white; }
+    .icon-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: white;
+      color: var(--shopee-orange);
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 1px 5px;
+      border: 1px solid var(--shopee-orange);
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* --- SECTION E-WALLET / SPAYLATER BAR --- */
+    .wallet-bar {
+      background: white;
+      margin: 10px 12px;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      animation: fadeInSlideUp 0.4s ease-out;
+    }
+    .wallet-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .wallet-item:hover { transform: translateY(-2px); }
+    .wallet-icon { font-size: 18px; color: var(--shopee-orange); }
+    .wallet-title { font-weight: bold; color: #222; font-size: 12px; }
+    .wallet-sub { color: var(--shopee-orange); font-size: 10px; font-weight: 600; }
+    .wallet-divider { width: 1px; height: 24px; background: #eee; }
+
+    /* --- QUICK MENU MENU UTAMA --- */
+    .quick-menu {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      margin: 0 12px 12px 12px;
+      padding: 14px 6px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      animation: fadeInSlideUp 0.5s ease-out;
+    }
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      width: 20%;
+      text-align: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .menu-item:hover { transform: translateY(-5px) scale(1.05); }
+    .menu-icon-bg {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid #ffe0d8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--shopee-orange);
+      background: #fff6f4;
+      box-shadow: 0 3px 6px rgba(238,77,45,0.1);
+    }
+    .menu-text { font-size: 10px; color: #444; font-weight: 500; line-height: 1.2; }
+
+    /* --- BANNER PROMO 8.8 --- */
+    .promo-banner {
+      margin: 0 12px 12px 12px;
+      background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,82,212,0.3);
+      cursor: pointer;
+      animation: fadeInSlideUp 0.6s ease-out;
+    }
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: skewX(-25deg);
+      animation: shimmerEffect 3s infinite;
+    }
+    .promo-badge-tag {
+      background: #00c853;
+      color: white;
+      font-size: 9px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .promo-title { font-size: 16px; font-weight: 900; line-height: 1.1; }
+    .promo-subtitle { font-size: 11px; margin-top: 2px; font-weight: 600; opacity: 0.9; }
+    .btn-promo-action {
+      background: #ffeb3b;
+      color: #000;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    .promo-banner:hover .btn-promo-action { transform: scale(1.1); }
+
+    /* --- CONTAINER & GRID --- */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 12px; }
 
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
     .product-card { 
       background: white; border-radius: 8px; overflow: hidden; 
       box-shadow: 0 1px 4px rgba(0,0,0,0.08); display: flex; flex-direction: column; 
-      justify-content: space-between; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      justify-content: space-between; cursor: pointer; transition: all 0.3s ease;
+      animation: fadeInSlideUp 0.7s ease-out;
     }
-    .product-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
     .product-img { width: 100%; height: 160px; object-fit: cover; background: #eee; }
     .product-info { padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
     .product-title { font-size: 13px; font-weight: 600; line-height: 1.3; height: 34px; overflow: hidden; color: #222; margin-bottom: 4px; }
     .product-price { color: var(--shopee-orange); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
     
-    .btn-buy { background: var(--shopee-orange); color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
+    .btn-buy { background: var(--shopee-orange); color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; transition: background 0.2s; }
     .btn-buy:active { opacity: 0.8; }
     .btn-secondary { background: #fff; color: var(--shopee-orange); border: 1px solid var(--shopee-orange); width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; padding: 15px; }
-    .modal-content { background: white; border-radius: 10px; width: 100%; max-width: 450px; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeIn 0.2s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    .close-modal { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #888; font-weight: bold; }
+    /* FLOATING BONUS WIDGET (SAMPING KANAN) */
+    .floating-bonus-widget {
+      position: fixed;
+      right: 10px;
+      bottom: 120px;
+      z-index: 140;
+      animation: floatWidget 3s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .bonus-badge-img {
+      background: linear-gradient(135deg, #ff9800, #ff5722);
+      color: white;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .bonus-badge-img span { font-size: 9px; font-weight: 900; line-height: 1; }
 
-    .detail-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: #eee; }
-    .detail-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 6px; }
-    .detail-price { font-size: 18px; font-weight: 700; color: var(--shopee-orange); margin-bottom: 12px; }
-    .detail-desc-title { font-size: 12px; font-weight: 700; color: #666; margin-bottom: 4px; text-transform: uppercase; }
-    .detail-desc { font-size: 13px; color: #444; line-height: 1.5; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 16px; white-space: pre-line; }
-
-    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-
-    .form-group { margin-bottom: 12px; text-align: left; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-    .form-group input, .form-group textarea { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; }
-
-    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 2000; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
-    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    /* --- STYLE VOUCHER & BOTTOM NAV BAR (PERSIS FOTO) --- */
+    /* --- STYLE VOUCHER & BOTTOM NAV BAR --- */
     .fixed-bottom-container {
       position: fixed;
       bottom: 0;
@@ -80,7 +262,6 @@
       box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
     }
 
-    /* Banner Voucher */
     .voucher-banner {
       background-color: #ffeae6;
       padding: 8px 14px;
@@ -90,146 +271,156 @@
       border-bottom: 1px solid #f2d3cd;
       cursor: pointer;
     }
-    .voucher-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .voucher-left { display: flex; align-items: center; gap: 10px; }
     .voucher-icon {
       background: var(--shopee-orange);
       color: white;
-      width: 32px;
-      height: 24px;
+      width: 32px; height: 24px;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 13px;
-      position: relative;
     }
-    .voucher-title-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .voucher-discount {
-      color: var(--shopee-orange);
-      font-weight: 800;
-      font-size: 14px;
-    }
-    .voucher-badge {
-      border: 1px solid var(--shopee-orange);
-      color: var(--shopee-orange);
-      font-size: 10px;
-      padding: 1px 4px;
-      border-radius: 3px;
-      background: #fff;
-    }
-    .voucher-subtext {
-      font-size: 12px;
-      color: #333;
-      margin-top: 2px;
-    }
-    .voucher-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .timer-box {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .timer-digit {
-      background: #000;
-      color: #fff;
-      font-weight: bold;
-      font-size: 11px;
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-    .timer-colon {
-      font-weight: bold;
-      font-size: 11px;
-      color: #000;
-    }
-    .close-voucher {
-      font-size: 16px;
-      color: #777;
-      cursor: pointer;
-      padding: 2px;
-    }
+    .voucher-title-row { display: flex; align-items: center; gap: 6px; }
+    .voucher-discount { color: var(--shopee-orange); font-weight: 800; font-size: 14px; }
+    .voucher-badge { border: 1px solid var(--shopee-orange); color: var(--shopee-orange); font-size: 10px; padding: 1px 4px; border-radius: 3px; background: #fff; }
+    .voucher-subtext { font-size: 12px; color: #333; margin-top: 2px; }
+    .voucher-right { display: flex; align-items: center; gap: 10px; }
+    .timer-box { display: flex; align-items: center; gap: 3px; }
+    .timer-digit { background: #000; color: #fff; font-weight: bold; font-size: 11px; padding: 2px 4px; border-radius: 3px; }
+    .timer-colon { font-weight: bold; font-size: 11px; color: #000; }
+    .close-voucher { font-size: 16px; color: #777; cursor: pointer; padding: 2px; }
 
-    /* Bottom Navigation Bar */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 6px 0 10px 0;
-      background: #fff;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #555;
-      text-decoration: none;
-      font-size: 10px;
-      position: relative;
-      width: 20%;
-      cursor: pointer;
-    }
-    .nav-item i {
-      font-size: 18px;
-      margin-bottom: 3px;
-    }
-    .nav-item.active {
-      color: var(--shopee-orange);
-    }
-    .badge-pill {
-      position: absolute;
-      top: -2px;
-      right: 22%;
-      background: var(--shopee-orange);
-      color: white;
-      font-size: 9px;
-      font-weight: bold;
-      padding: 1px 5px;
-      border-radius: 10px;
-    }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px 0; background: #fff; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; text-decoration: none; font-size: 10px; position: relative; width: 20%; cursor: pointer; transition: color 0.2s; }
+    .nav-item i { font-size: 18px; margin-bottom: 3px; }
+    .nav-item.active { color: var(--shopee-orange); }
+    .badge-pill { position: absolute; top: -2px; right: 22%; background: var(--shopee-orange); color: white; font-size: 9px; font-weight: bold; padding: 1px 5px; border-radius: 10px; }
+
+    /* MODAL & TOAST */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; padding: 15px; }
+    .modal-content { background: white; border-radius: 10px; width: 100%; max-width: 450px; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeInSlideUp 0.2s ease-out; }
+    .close-modal { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #888; font-weight: bold; }
+    .detail-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: #eee; }
+    .detail-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 6px; }
+    .detail-price { font-size: 18px; font-weight: 700; color: var(--shopee-orange); margin-bottom: 12px; }
+    .detail-desc-title { font-size: 12px; font-weight: 700; color: #666; margin-bottom: 4px; text-transform: uppercase; }
+    .detail-desc { font-size: 13px; color: #444; line-height: 1.5; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 16px; white-space: pre-line; }
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; }
+
+    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 2000; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   </style>
 </head>
 <body>
 
+  <!-- HEADER DENGAN SEARCH BAR PERSIS GAMBAR -->
   <header>
-    <a href="#" class="brand"><i class="fas fa-store"></i> Sopy Online Shop</a>
-    
-    <div class="nav-actions">
-      <button class="cart-btn" onclick="openCartModal()">
-        <i class="fas fa-shopping-cart"></i> Keranjang (<span id="cartCount">0</span>)
-      </button>
-      <a href="admin.html" class="admin-btn">
-        <i class="fas fa-user-shield"></i> Login Admin
-      </a>
+    <div class="top-search-row">
+      <div class="search-box">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" value="Shock Belakang 320mm Tabung" placeholder="Cari di Sopy Online...">
+        <i class="fas fa-camera" onclick="showToast('Kamera aktif untuk scan barcode!')"></i>
+      </div>
+      <div class="header-icons">
+        <a class="icon-badge-wrapper" onclick="openCartModal()">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="icon-badge" id="cartCount">3</span>
+        </a>
+        <a class="icon-badge-wrapper" onclick="showToast('Membuka Pesan Chat...')">
+          <i class="fas fa-comment-dots"></i>
+        </a>
+      </div>
     </div>
   </header>
 
+  <!-- SECTION E-WALLET / SPAYLATER BAR -->
+  <div class="wallet-bar">
+    <div class="wallet-item" onclick="showToast('Klaim 100.000 sukses!')">
+      <i class="fas fa-wallet wallet-icon"></i>
+      <div>
+        <div class="wallet-title">Rp0</div>
+        <div class="wallet-sub">Klaim 100.000</div>
+      </div>
+    </div>
+    <div class="wallet-divider"></div>
+    <div class="wallet-item" onclick="showToast('Cek-in Harian Berhasil!')">
+      <i class="fas fa-coins wallet-icon" style="color:#ffb300;"></i>
+      <div>
+        <div class="wallet-title">Cek-in!</div>
+        <div class="wallet-sub">Cek-in Yuk!</div>
+      </div>
+    </div>
+    <div class="wallet-divider"></div>
+    <div class="wallet-item" onclick="showToast('SPayLater Diskon 50RB aktif!')">
+      <i class="fas fa-credit-card wallet-icon" style="color:#29b6f6;"></i>
+      <div>
+        <div class="wallet-title">SPayLater</div>
+        <div class="wallet-sub">Diskon 50RB!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK MENU PILIHAN -->
+  <div class="quick-menu">
+    <div class="menu-item" onclick="showToast('Membuka Spesial Belanja Pertama')">
+      <div class="menu-icon-bg"><i class="fas fa-gift"></i></div>
+      <div class="menu-text">Spesial Belanja...</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Pulsa & Tagihan')">
+      <div class="menu-icon-bg"><i class="fas fa-mobile-screen-button"></i></div>
+      <div class="menu-text">Pulsa, Tagihan...</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka ShopeeFood')">
+      <div class="menu-icon-bg"><i class="fas fa-utensils"></i></div>
+      <div class="menu-text">ShopeeFood</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Shopee Games')">
+      <div class="menu-icon-bg"><i class="fas fa-gamepad"></i></div>
+      <div class="menu-text">Shopee Games</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Semua Menu')">
+      <div class="menu-icon-bg"><i class="fas fa-border-all"></i></div>
+      <div class="menu-text">Lihat Semua</div>
+    </div>
+  </div>
+
+  <!-- BANNER PROMO 8.8 (PERSIS GAMBAR) -->
+  <div class="promo-banner" onclick="showToast('Membuka Promo Puncak 8.8!')">
+    <div>
+      <span class="promo-badge-tag">BESOK</span>
+      <div class="promo-title">DISKON 20% s.d. 1.5JT</div>
+      <div class="promo-subtitle">PROMO PUNCAK 8.8 - LEBIH HEMAT!</div>
+    </div>
+    <button class="btn-promo-action">CEK &gt;</button>
+  </div>
+
+  <!-- GRID PRODUK UTAMA -->
   <div class="container">
-    <h3 style="margin-bottom: 12px; font-size: 16px; color: #444;"><i class="fas fa-bag-shopping"></i> Produk Pilihan</h3>
+    <h3 style="margin-bottom: 12px; font-size: 15px; color: #444; display: flex; align-items: center; gap: 6px;">
+      <i class="fas fa-fire" style="color: var(--shopee-orange);"></i> Rekomendasi Produk HD
+    </h3>
     <div class="product-grid" id="productGrid">
       <!-- Produk di-render otomatis via JS -->
     </div>
   </div>
 
-  <!-- CONTAINER FIXED BOTTOM (BANNER & NAVIGASI) -->
+  <!-- FLOATING BONUS WIDGET SIKU KANAN (SENSASI HD) -->
+  <div class="floating-bonus-widget" onclick="showToast('Bonus Rp100.000 Berhasil Diklaim!')">
+    <div class="bonus-badge-img">
+      <i class="fas fa-gift" style="font-size: 16px; margin-bottom: 2px;"></i>
+      <span>PASTI<br>BONUS</span>
+    </div>
+  </div>
+
+  <!-- CONTAINER FIXED BOTTOM (BANNER VOUCHER & BOTTOM NAV BAR) -->
   <div class="fixed-bottom-container">
-    <!-- Banner Voucher Melayang -->
     <div class="voucher-banner" id="voucherBanner" onclick="applyVoucher()">
       <div class="voucher-left">
-        <div class="voucher-icon">
-          <i class="fas fa-percent"></i>
-        </div>
+        <div class="voucher-icon"><i class="fas fa-percent"></i></div>
         <div>
           <div class="voucher-title-row">
             <span class="voucher-discount">Diskon 100%</span>
@@ -338,6 +529,24 @@
   <script>
     let cart = [];
 
+    // --- DATA DEFAULT DUMMY JIKA RENDER AWAL KOSONG ---
+    const defaultProducts = [
+      {
+        id: 101,
+        title: "ONGKIR Rp0 SE-INDONESIA Promo Spesial",
+        price: 0,
+        image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80",
+        desc: "Nikmati promo ongkir Rp0 ke seluruh Indonesia untuk semua pilihan barang pertama kamu!"
+      },
+      {
+        id: 102,
+        title: "GELANG TANGAN RANTAI 3mm - 11mm TITANIUM",
+        price: 0,
+        image: "https://images.unsplash.com/photo-1611591475111-a831e5f8f830?w=500&q=80",
+        desc: "Gelang Tangan Rantai Titanium Anti Karat, Awet & Elegan. Diskon Puncak 90% OFF."
+      }
+    ];
+
     // --- FITUR VOUCHER & TIMER ---
     function closeVoucher() {
       document.getElementById('voucherBanner').style.display = 'none';
@@ -347,7 +556,6 @@
       showToast("Voucher Diskon 100% Berhasil Dipakai!");
     }
 
-    // Countdown Timer Berjalan Realtime
     let totalSeconds = (14 * 3600) + (45 * 60) + 2;
     setInterval(() => {
       if (totalSeconds > 0) {
@@ -362,7 +570,7 @@
       }
     }, 1000);
 
-    // --- FITUR BOTTOM NAVIGASI ---
+    // --- FITUR NAVIGATION TAB ---
     function switchTab(element, tabName) {
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
@@ -379,11 +587,10 @@
 
     function renderProducts() {
       const grid = document.getElementById('productGrid');
-      const products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
 
       if (products.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Belum ada produk yang dijual admin.</div>`;
-        return;
+        products = defaultProducts;
       }
 
       let html = '';
@@ -405,7 +612,9 @@
     }
 
     function openProductDetail(productId) {
-      const products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      if(products.length === 0) products = defaultProducts;
+
       const target = products.find(p => p.id === productId);
       if (!target) return;
 
@@ -433,7 +642,9 @@
     }
 
     function addToCart(productId) {
-      const products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      if(products.length === 0) products = defaultProducts;
+
       const target = products.find(p => p.id === productId);
       if (!target) return;
 
@@ -530,12 +741,6 @@
       document.getElementById('custPhone').value = '';
       document.getElementById('custAddress').value = '';
     }
-
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'sopy_products') {
-        renderProducts();
-      }
-    });
 
     renderProducts();
   </script>
