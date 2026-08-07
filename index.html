@@ -12,7 +12,7 @@
       --shopee-bg: #f5f5f5; 
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--shopee-bg); color: #333; min-height: 100vh; padding-bottom: 80px; }
+    body { background-color: var(--shopee-bg); color: #333; min-height: 100vh; padding-bottom: 140px; }
 
     header {
       background: var(--shopee-orange); color: white; padding: 12px 20px;
@@ -68,6 +68,136 @@
 
     #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 2000; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
     #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* --- STYLE VOUCHER & BOTTOM NAV BAR (PERSIS FOTO) --- */
+    .fixed-bottom-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 150;
+      background: white;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    }
+
+    /* Banner Voucher */
+    .voucher-banner {
+      background-color: #ffeae6;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f2d3cd;
+      cursor: pointer;
+    }
+    .voucher-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .voucher-icon {
+      background: var(--shopee-orange);
+      color: white;
+      width: 32px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      position: relative;
+    }
+    .voucher-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .voucher-discount {
+      color: var(--shopee-orange);
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .voucher-badge {
+      border: 1px solid var(--shopee-orange);
+      color: var(--shopee-orange);
+      font-size: 10px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: #fff;
+    }
+    .voucher-subtext {
+      font-size: 12px;
+      color: #333;
+      margin-top: 2px;
+    }
+    .voucher-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .timer-box {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .timer-digit {
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    .timer-colon {
+      font-weight: bold;
+      font-size: 11px;
+      color: #000;
+    }
+    .close-voucher {
+      font-size: 16px;
+      color: #777;
+      cursor: pointer;
+      padding: 2px;
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 0 10px 0;
+      background: #fff;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      text-decoration: none;
+      font-size: 10px;
+      position: relative;
+      width: 20%;
+      cursor: pointer;
+    }
+    .nav-item i {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+    .nav-item.active {
+      color: var(--shopee-orange);
+    }
+    .badge-pill {
+      position: absolute;
+      top: -2px;
+      right: 22%;
+      background: var(--shopee-orange);
+      color: white;
+      font-size: 9px;
+      font-weight: bold;
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
@@ -90,6 +220,61 @@
     <div class="product-grid" id="productGrid">
       <!-- Produk di-render otomatis via JS -->
     </div>
+  </div>
+
+  <!-- CONTAINER FIXED BOTTOM (BANNER & NAVIGASI) -->
+  <div class="fixed-bottom-container">
+    <!-- Banner Voucher Melayang -->
+    <div class="voucher-banner" id="voucherBanner" onclick="applyVoucher()">
+      <div class="voucher-left">
+        <div class="voucher-icon">
+          <i class="fas fa-percent"></i>
+        </div>
+        <div>
+          <div class="voucher-title-row">
+            <span class="voucher-discount">Diskon 100%</span>
+            <span class="voucher-badge">Belanja Pertama</span>
+          </div>
+          <div class="voucher-subtext">Pakai voucher sebelum berakhir!</div>
+        </div>
+      </div>
+      <div class="voucher-right">
+        <div class="timer-box">
+          <span class="timer-digit" id="timerHours">14</span>
+          <span class="timer-colon">:</span>
+          <span class="timer-digit" id="timerMinutes">45</span>
+          <span class="timer-colon">:</span>
+          <span class="timer-digit" id="timerSeconds">02</span>
+        </div>
+        <span class="close-voucher" onclick="event.stopPropagation(); closeVoucher();">&times;</span>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab(this, 'Beranda')">
+        <i class="fas fa-house"></i>
+        <span>Beranda</span>
+      </div>
+      <div class="nav-item" onclick="switchTab(this, 'Shopee Drama')">
+        <i class="fas fa-clapperboard"></i>
+        <span>Shopee Drama</span>
+      </div>
+      <div class="nav-item" onclick="switchTab(this, 'Live & Video')">
+        <i class="fas fa-tv"></i>
+        <span class="badge-pill">Baru</span>
+        <span>Live & Video</span>
+      </div>
+      <div class="nav-item" onclick="switchTab(this, 'Notifikasi')">
+        <i class="fas fa-bell"></i>
+        <span class="badge-pill">8</span>
+        <span>Notifikasi</span>
+      </div>
+      <div class="nav-item" onclick="switchTab(this, 'Saya')">
+        <i class="fas fa-user"></i>
+        <span>Saya</span>
+      </div>
+    </nav>
   </div>
 
   <!-- MODAL DETAIL PRODUK -->
@@ -153,6 +338,38 @@
   <script>
     let cart = [];
 
+    // --- FITUR VOUCHER & TIMER ---
+    function closeVoucher() {
+      document.getElementById('voucherBanner').style.display = 'none';
+    }
+
+    function applyVoucher() {
+      showToast("Voucher Diskon 100% Berhasil Dipakai!");
+    }
+
+    // Countdown Timer Berjalan Realtime
+    let totalSeconds = (14 * 3600) + (45 * 60) + 2;
+    setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        document.getElementById('timerHours').innerText = String(hrs).padStart(2, '0');
+        document.getElementById('timerMinutes').innerText = String(mins).padStart(2, '0');
+        document.getElementById('timerSeconds').innerText = String(secs).padStart(2, '0');
+      }
+    }, 1000);
+
+    // --- FITUR BOTTOM NAVIGASI ---
+    function switchTab(element, tabName) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      showToast("Membuka menu: " + tabName);
+    }
+
+    // --- FITUR TOKO & KERANJANG ---
     function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
