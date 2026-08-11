@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sopy Online Shop - HD Interactive</title>
+  <title>Sopy Online Shop - Slot Casino Theme</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root { 
-      --shopee-orange: #ee4d2d; 
-      --shopee-dark-orange: #d73211;
-      --shopee-bg: #f5f5f5; 
-      --shopee-gradient: linear-gradient(135deg, #ff5722 0%, #ee4d2d 100%);
+      /* TEMA SLOT / CASINO UI */
+      --slot-gold: #ffd700; 
+      --slot-gold-dark: #b8860b;
+      --slot-red: #d32f2f;
+      --slot-bg: #121212; 
+      --slot-card-bg: #1e1e1e;
+      --slot-text: #f5f5f5;
+      --slot-gradient: linear-gradient(135deg, #1f1f1f 0%, #111111 100%);
+      --gold-gradient: linear-gradient(135deg, #ffe066 0%, #f5af19 100%);
+      --red-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--shopee-bg); color: #333; min-height: 100vh; padding-bottom: 140px; overflow-x: hidden; }
+    body { background-color: var(--slot-bg); color: var(--slot-text); min-height: 100vh; padding-bottom: 140px; overflow-x: hidden; }
 
     /* --- ANIMASI HD --- */
     @keyframes pulseGlow {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(238, 77, 45, 0.4); }
-      70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(238, 77, 45, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(238, 77, 45, 0); }
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.5); }
+      70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
     }
 
     @keyframes floatWidget {
@@ -38,14 +44,15 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- HEADER SEARCH BAR (DENGAN TOMBOL ADMIN) --- */
+    /* --- HEADER SEARCH BAR --- */
     header {
-      background: var(--shopee-gradient);
+      background: var(--slot-gradient);
       padding: 10px 14px 12px 14px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(238, 77, 45, 0.2);
+      border-bottom: 2px solid var(--slot-gold);
+      box-shadow: 0 2px 12px rgba(255, 215, 0, 0.15);
     }
     .top-search-row {
       display: flex;
@@ -54,88 +61,88 @@
     }
     .search-box {
       flex: 1;
-      background: white;
+      background: #2a2a2a;
+      border: 1px solid var(--slot-gold);
       border-radius: 6px;
       display: flex;
       align-items: center;
       padding: 8px 12px;
       gap: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .search-box i.fa-magnifying-glass { color: var(--shopee-orange); font-size: 15px; }
+    .search-box i.fa-magnifying-glass { color: var(--slot-gold); font-size: 15px; }
     .search-box input {
       border: none;
       outline: none;
       width: 100%;
       font-size: 13px;
-      color: #333;
+      color: #fff;
+      background: transparent;
     }
-    .search-box i.fa-camera { color: #888; font-size: 15px; cursor: pointer; }
+    .search-box i.fa-camera { color: #aaa; font-size: 15px; cursor: pointer; }
 
-    .header-icons { display: flex; align-items: center; gap: 12px; color: white; font-size: 18px; }
-    .icon-badge-wrapper { position: relative; cursor: pointer; text-decoration: none; color: white; display: flex; align-items: center; }
+    .header-icons { display: flex; align-items: center; gap: 12px; color: var(--slot-gold); font-size: 18px; }
+    .icon-badge-wrapper { position: relative; cursor: pointer; text-decoration: none; color: var(--slot-gold); display: flex; align-items: center; }
     .icon-badge {
       position: absolute;
       top: -6px;
       right: -8px;
-      background: white;
-      color: var(--shopee-orange);
+      background: var(--slot-red);
+      color: white;
       font-size: 10px;
       font-weight: bold;
       border-radius: 10px;
       padding: 1px 5px;
-      border: 1px solid var(--shopee-orange);
+      border: 1px solid var(--slot-gold);
       animation: pulseGlow 2s infinite;
     }
 
-    /* BADGE/TOMBOL ADMIN KHUSUS KANAN ATAS */
+    /* TOMBOL ADMIN KANAN ATAS */
     .admin-btn-header {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      padding: 4px 8px;
+      background: var(--gold-gradient);
+      border: 1px solid var(--slot-gold);
+      padding: 5px 10px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: bold;
-      color: white;
+      color: #000;
       display: flex;
       align-items: center;
       gap: 4px;
       cursor: pointer;
-      backdrop-filter: blur(4px);
       transition: all 0.2s;
     }
     .admin-btn-header:hover {
-      background: white;
-      color: var(--shopee-orange);
+      opacity: 0.9;
+      transform: scale(1.05);
     }
 
-    /* --- SECTION E-WALLET / SPAYLATER BAR --- */
+    /* --- SECTION WALLET BAR --- */
     .wallet-bar {
-      background: white;
+      background: var(--slot-card-bg);
+      border: 1px solid #333;
       margin: 10px 12px;
       border-radius: 8px;
       padding: 10px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       animation: fadeInSlideUp 0.4s ease-out;
     }
     .wallet-item { display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; }
-    .wallet-icon { font-size: 18px; color: var(--shopee-orange); }
-    .wallet-title { font-weight: bold; color: #222; font-size: 12px; }
-    .wallet-sub { color: var(--shopee-orange); font-size: 10px; font-weight: 600; }
-    .wallet-divider { width: 1px; height: 24px; background: #eee; }
+    .wallet-icon { font-size: 18px; color: var(--slot-gold); }
+    .wallet-title { font-weight: bold; color: #fff; font-size: 12px; }
+    .wallet-sub { color: var(--slot-gold); font-size: 10px; font-weight: 600; }
+    .wallet-divider { width: 1px; height: 24px; background: #333; }
 
-    /* --- QUICK MENU MENU UTAMA --- */
+    /* --- QUICK MENU --- */
     .quick-menu {
       display: flex;
       justify-content: space-around;
-      background: white;
+      background: var(--slot-card-bg);
+      border: 1px solid #333;
       margin: 0 12px 12px 12px;
       padding: 14px 6px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       animation: fadeInSlideUp 0.5s ease-out;
     }
     .menu-item {
@@ -153,20 +160,21 @@
       width: 42px;
       height: 42px;
       border-radius: 12px;
-      border: 1px solid #ffe0d8;
+      border: 1px solid var(--slot-gold);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      color: var(--shopee-orange);
-      background: #fff6f4;
+      color: var(--slot-gold);
+      background: #2a2a2a;
     }
-    .menu-text { font-size: 10px; color: #444; font-weight: 500; line-height: 1.2; }
+    .menu-text { font-size: 10px; color: #ddd; font-weight: 500; line-height: 1.2; }
 
-    /* --- BANNER PROMO 8.8 --- */
+    /* --- BANNER PROMO JACKPOT --- */
     .promo-banner {
       margin: 0 12px 12px 12px;
-      background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc);
+      background: var(--red-gradient);
+      border: 1px solid var(--slot-gold);
       border-radius: 10px;
       padding: 14px 16px;
       color: white;
@@ -175,7 +183,6 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,82,212,0.3);
       cursor: pointer;
       animation: fadeInSlideUp 0.6s ease-out;
     }
@@ -188,31 +195,31 @@
       transform: skewX(-25deg);
       animation: shimmerEffect 3s infinite;
     }
-    .promo-badge-tag { background: #00c853; color: white; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
-    .promo-title { font-size: 16px; font-weight: 900; line-height: 1.1; }
+    .promo-badge-tag { background: #000; color: var(--slot-gold); border: 1px solid var(--slot-gold); font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+    .promo-title { font-size: 16px; font-weight: 900; line-height: 1.1; color: #fff; }
     .promo-subtitle { font-size: 11px; margin-top: 2px; font-weight: 600; opacity: 0.9; }
-    .btn-promo-action { background: #ffeb3b; color: #000; font-weight: 800; font-size: 11px; padding: 6px 12px; border-radius: 20px; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .btn-promo-action { background: var(--gold-gradient); color: #000; font-weight: 800; font-size: 11px; padding: 6px 12px; border-radius: 20px; border: none; }
 
     /* --- CONTAINER & GRID --- */
     .container { max-width: 900px; margin: 0 auto; padding: 0 12px; }
 
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
     .product-card { 
-      background: white; border-radius: 8px; overflow: hidden; 
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08); display: flex; flex-direction: column; 
+      background: var(--slot-card-bg); border-radius: 8px; overflow: hidden; 
+      border: 1px solid #333; display: flex; flex-direction: column; 
       justify-content: space-between; cursor: pointer; transition: all 0.3s ease;
       animation: fadeInSlideUp 0.7s ease-out;
     }
-    .product-card:hover { transform: translateY(-4px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
-    .product-img { width: 100%; height: 160px; object-fit: cover; background: #eee; }
+    .product-card:hover { border-color: var(--slot-gold); transform: translateY(-4px); box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2); }
+    .product-img { width: 100%; height: 160px; object-fit: cover; background: #222; }
     .product-info { padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
-    .product-title { font-size: 13px; font-weight: 600; line-height: 1.3; height: 34px; overflow: hidden; color: #222; margin-bottom: 4px; }
-    .product-price { color: var(--shopee-orange); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .product-title { font-size: 13px; font-weight: 600; line-height: 1.3; height: 34px; overflow: hidden; color: #fff; margin-bottom: 4px; }
+    .product-price { color: var(--slot-gold); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
     
-    .btn-buy { background: var(--shopee-orange); color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
-    .btn-secondary { background: #fff; color: var(--shopee-orange); border: 1px solid var(--shopee-orange); width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
+    .btn-buy { background: var(--gold-gradient); color: #000; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
+    .btn-secondary { background: transparent; color: var(--slot-gold); border: 1px solid var(--slot-gold); width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-    /* FLOATING BONUS WIDGET */
+    /* FLOATING WIDGET */
     .floating-bonus-widget {
       position: fixed;
       right: 10px;
@@ -222,8 +229,8 @@
       cursor: pointer;
     }
     .bonus-badge-img {
-      background: linear-gradient(135deg, #ff9800, #ff5722);
-      color: white;
+      background: var(--gold-gradient);
+      color: #000;
       border: 2px solid #fff;
       border-radius: 50%;
       width: 55px;
@@ -232,94 +239,106 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
       text-align: center;
     }
     .bonus-badge-img span { font-size: 8px; font-weight: 900; line-height: 1; }
 
-    /* --- STYLE VOUCHER & BOTTOM NAV BAR --- */
+    /* --- FIXED BOTTOM BAR --- */
     .fixed-bottom-container {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
       z-index: 150;
-      background: white;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+      background: #181818;
+      border-top: 1px solid var(--slot-gold);
     }
 
     .voucher-banner {
-      background-color: #ffeae6;
+      background-color: #261f0c;
       padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #f2d3cd;
+      border-bottom: 1px solid #3d3012;
       cursor: pointer;
     }
     .voucher-left { display: flex; align-items: center; gap: 10px; }
     .voucher-icon {
-      background: var(--shopee-orange);
-      color: white;
+      background: var(--slot-gold);
+      color: #000;
       width: 32px; height: 24px;
       border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px;
     }
     .voucher-title-row { display: flex; align-items: center; gap: 6px; }
-    .voucher-discount { color: var(--shopee-orange); font-weight: 800; font-size: 14px; }
-    .voucher-badge { border: 1px solid var(--shopee-orange); color: var(--shopee-orange); font-size: 10px; padding: 1px 4px; border-radius: 3px; background: #fff; }
-    .voucher-subtext { font-size: 12px; color: #333; margin-top: 2px; }
+    .voucher-discount { color: var(--slot-gold); font-weight: 800; font-size: 14px; }
+    .voucher-badge { border: 1px solid var(--slot-gold); color: var(--slot-gold); font-size: 10px; padding: 1px 4px; border-radius: 3px; background: #000; }
+    .voucher-subtext { font-size: 12px; color: #ccc; margin-top: 2px; }
     .voucher-right { display: flex; align-items: center; gap: 10px; }
     .timer-box { display: flex; align-items: center; gap: 3px; }
-    .timer-digit { background: #000; color: #fff; font-weight: bold; font-size: 11px; padding: 2px 4px; border-radius: 3px; }
-    .timer-colon { font-weight: bold; font-size: 11px; color: #000; }
-    .close-voucher { font-size: 16px; color: #777; cursor: pointer; padding: 2px; }
+    .timer-digit { background: #000; color: var(--slot-gold); border: 1px solid var(--slot-gold); font-weight: bold; font-size: 11px; padding: 2px 4px; border-radius: 3px; }
+    .timer-colon { font-weight: bold; font-size: 11px; color: var(--slot-gold); }
+    .close-voucher { font-size: 16px; color: #aaa; cursor: pointer; padding: 2px; }
 
-    .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px 0; background: #fff; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; text-decoration: none; font-size: 10px; position: relative; width: 20%; cursor: pointer; }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px 0; background: #121212; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #aaa; text-decoration: none; font-size: 10px; position: relative; width: 20%; cursor: pointer; }
     .nav-item i { font-size: 18px; margin-bottom: 3px; }
-    .nav-item.active { color: var(--shopee-orange); }
-    .badge-pill { position: absolute; top: -2px; right: 22%; background: var(--shopee-orange); color: white; font-size: 9px; font-weight: bold; padding: 1px 5px; border-radius: 10px; }
+    .nav-item.active { color: var(--slot-gold); }
+    .badge-pill { position: absolute; top: -2px; right: 22%; background: var(--slot-red); color: white; font-size: 9px; font-weight: bold; padding: 1px 5px; border-radius: 10px; }
 
     /* MODAL & TOAST */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; padding: 15px; }
-    .modal-content { background: white; border-radius: 10px; width: 100%; max-width: 450px; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeInSlideUp 0.2s ease-out; }
-    .close-modal { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #888; font-weight: bold; }
-    .detail-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: #eee; }
-    .detail-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 6px; }
-    .detail-price { font-size: 18px; font-weight: 700; color: var(--shopee-orange); margin-bottom: 12px; }
-    .detail-desc-title { font-size: 12px; font-weight: 700; color: #666; margin-bottom: 4px; text-transform: uppercase; }
-    .detail-desc { font-size: 13px; color: #444; line-height: 1.5; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 16px; white-space: pre-line; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; justify-content: center; align-items: center; padding: 15px; }
+    .modal-content { background: var(--slot-card-bg); border: 1px solid var(--slot-gold); border-radius: 10px; width: 100%; max-width: 450px; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeInSlideUp 0.2s ease-out; color: #fff; }
+    .close-modal { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #aaa; font-weight: bold; }
+    .detail-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: #222; }
+    .detail-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .detail-price { font-size: 18px; font-weight: 700; color: var(--slot-gold); margin-bottom: 12px; }
+    .detail-desc-title { font-size: 12px; font-weight: 700; color: var(--slot-gold); margin-bottom: 4px; text-transform: uppercase; }
+    .detail-desc { font-size: 13px; color: #ddd; line-height: 1.5; background: #2a2a2a; padding: 10px; border-radius: 6px; margin-bottom: 16px; white-space: pre-line; }
     .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
     .form-group { margin-bottom: 12px; text-align: left; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-    .form-group input, .form-group textarea { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--slot-gold); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px 10px; border: 1px solid #444; background: #2a2a2a; color: #fff; border-radius: 6px; font-size: 13px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #333; font-size: 12px; }
 
-    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 2000; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
+    /* STATUS BADGES */
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .status-unpaid { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+    .status-paid { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+
+    #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: var(--slot-gold); color: #000; font-weight: bold; padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 2000; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
     #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER DENGAN SEARCH BAR + TOMBOL ADMIN KANAN ATAS -->
+  <!-- HEADER DENGAN SEARCH BAR -->
   <header>
     <div class="top-search-row">
       <div class="search-box">
         <i class="fas fa-magnifying-glass"></i>
-        <input type="text" value="Shock Belakang 320mm Tabung" placeholder="Cari di Sopy Online...">
-        <i class="fas fa-camera" onclick="showToast('Kamera aktif untuk scan barcode!')"></i>
+        <!-- Search Input Real-Time -->
+        <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Cari barang slot pilihanmu...">
+        <i class="fas fa-camera" onclick="showToast('Fitur Scan Aktif!')"></i>
       </div>
       <div class="header-icons">
         <a class="icon-badge-wrapper" onclick="openCartModal()">
           <i class="fas fa-shopping-cart"></i>
           <span class="icon-badge" id="cartCount">0</span>
         </a>
-        <a class="icon-badge-wrapper" onclick="showToast('Membuka Pesan Chat...')">
-          <i class="fas fa-comment-dots"></i>
+        <a class="icon-badge-wrapper" onclick="openOrdersModal()">
+          <i class="fas fa-receipt"></i>
         </a>
-        <!-- TOMBOL ADMIN KANAN ATAS -->
         <button class="admin-btn-header" onclick="openAdminDashboard()">
           <i class="fas fa-user-shield"></i> Admin
         </button>
@@ -327,105 +346,105 @@
     </div>
   </header>
 
-  <!-- SECTION E-WALLET / SPAYLATER BAR -->
+  <!-- WALLET BAR -->
   <div class="wallet-bar">
-    <div class="wallet-item" onclick="showToast('Klaim 100.000 sukses!')">
+    <div class="wallet-item" onclick="showToast('Klaim Bonus Rp100.000 Sukses!')">
       <i class="fas fa-wallet wallet-icon"></i>
       <div>
-        <div class="wallet-title">Rp0</div>
-        <div class="wallet-sub">Klaim 100.000</div>
+        <div class="wallet-title">Saldo Slot</div>
+        <div class="wallet-sub">Klaim Rp100.000</div>
       </div>
     </div>
     <div class="wallet-divider"></div>
     <div class="wallet-item" onclick="showToast('Cek-in Harian Berhasil!')">
-      <i class="fas fa-coins wallet-icon" style="color:#ffb300;"></i>
+      <i class="fas fa-coins wallet-icon"></i>
       <div>
-        <div class="wallet-title">Cek-in!</div>
-        <div class="wallet-sub">Cek-in Yuk!</div>
+        <div class="wallet-title">Koin VIP</div>
+        <div class="wallet-sub">Ambil Bonus</div>
       </div>
     </div>
     <div class="wallet-divider"></div>
-    <div class="wallet-item" onclick="showToast('SPayLater Diskon 50RB aktif!')">
-      <i class="fas fa-credit-card wallet-icon" style="color:#29b6f6;"></i>
+    <div class="wallet-item" onclick="showToast('Deposit Otomatis Aktif!')">
+      <i class="fas fa-bolt wallet-icon"></i>
       <div>
-        <div class="wallet-title">SPayLater</div>
-        <div class="wallet-sub">Diskon 50RB!</div>
+        <div class="wallet-title">Depo Cepat</div>
+        <div class="wallet-sub">Instant QRIS</div>
       </div>
     </div>
   </div>
 
-  <!-- QUICK MENU PILIHAN -->
+  <!-- QUICK MENU -->
   <div class="quick-menu">
-    <div class="menu-item" onclick="showToast('Membuka Spesial Belanja Pertama')">
+    <div class="menu-item" onclick="showToast('Membuka Event Pragmatic')">
+      <div class="menu-icon-bg"><i class="fas fa-crown"></i></div>
+      <div class="menu-text">VIP Member</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Slot Gacor')">
+      <div class="menu-icon-bg"><i class="fas fa-fire"></i></div>
+      <div class="menu-text">Barang Hot</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Deposit QRIS')">
+      <div class="menu-icon-bg"><i class="fas fa-qrcode"></i></div>
+      <div class="menu-text">QRIS Instant</div>
+    </div>
+    <div class="menu-item" onclick="showToast('Membuka Bonus Harian')">
       <div class="menu-icon-bg"><i class="fas fa-gift"></i></div>
-      <div class="menu-text">Spesial Belanja...</div>
+      <div class="menu-text">Bonus Melimpah</div>
     </div>
-    <div class="menu-item" onclick="showToast('Membuka Pulsa & Tagihan')">
-      <div class="menu-icon-bg"><i class="fas fa-mobile-screen-button"></i></div>
-      <div class="menu-text">Pulsa, Tagihan...</div>
-    </div>
-    <div class="menu-item" onclick="showToast('Membuka ShopeeFood')">
-      <div class="menu-icon-bg"><i class="fas fa-utensils"></i></div>
-      <div class="menu-text">ShopeeFood</div>
-    </div>
-    <div class="menu-item" onclick="showToast('Membuka Shopee Games')">
-      <div class="menu-icon-bg"><i class="fas fa-gamepad"></i></div>
-      <div class="menu-text">Shopee Games</div>
-    </div>
-    <div class="menu-item" onclick="showToast('Membuka Semua Menu')">
+    <div class="menu-item" onclick="showToast('Membuka Semua Category')">
       <div class="menu-icon-bg"><i class="fas fa-border-all"></i></div>
-      <div class="menu-text">Lihat Semua</div>
+      <div class="menu-text">Semua Produk</div>
     </div>
   </div>
 
-  <!-- BANNER PROMO 8.8 -->
-  <div class="promo-banner" onclick="showToast('Membuka Promo Puncak 8.8!')">
+  <!-- BANNER PROMO JACKPOT -->
+  <div class="promo-banner" onclick="showToast('Bonus Maxwin Aktif!')">
     <div>
-      <span class="promo-badge-tag">BESOK</span>
-      <div class="promo-title">DISKON 20% s.d. 1.5JT</div>
-      <div class="promo-subtitle">PROMO PUNCAK 8.8 - LEBIH HEMAT!</div>
+      <span class="promo-badge-tag">JACKPOT 88x</span>
+      <div class="promo-title">DISKON HINGGA 99%</div>
+      <div class="promo-subtitle">PROMO SPESIAL EXTRA BONUS HARI INI!</div>
     </div>
-    <button class="btn-promo-action">CEK &gt;</button>
+    <button class="btn-promo-action">KLAIM &gt;</button>
   </div>
 
   <!-- GRID PRODUK UTAMA -->
   <div class="container">
-    <h3 style="margin-bottom: 12px; font-size: 15px; color: #444; display: flex; align-items: center; gap: 6px;">
-      <i class="fas fa-fire" style="color: var(--shopee-orange);"></i> Rekomendasi Produk HD
+    <h3 style="margin-bottom: 12px; font-size: 15px; color: var(--slot-gold); display: flex; align-items: center; gap: 6px;">
+      <i class="fas fa-gem"></i> Rekomendasi Barang Slot Super
     </h3>
     <div class="product-grid" id="productGrid">
-      <!-- Produk di-render otomatis via JS -->
+      <!-- Produk di-render via JS -->
     </div>
   </div>
 
-  <!-- FLOATING BONUS WIDGET SIKU KANAN -->
-  <div class="floating-bonus-widget" onclick="showToast('Bonus Rp100.000 Berhasil Diklaim!')">
+  <!-- FLOATING WIDGET -->
+  <div class="floating-bonus-widget" onclick="showToast('Bonus Rp100.000 Diklaim!')">
     <div class="bonus-badge-img">
       <i class="fas fa-gift" style="font-size: 16px; margin-bottom: 2px;"></i>
-      <span>PASTI<br>BONUS</span>
+      <span>SUPER<br>BONUS</span>
     </div>
   </div>
 
-  <!-- CONTAINER FIXED BOTTOM (BANNER VOUCHER & BOTTOM NAV BAR) -->
+  <!-- FIXED BOTTOM CONTAINERS -->
   <div class="fixed-bottom-container">
     <div class="voucher-banner" id="voucherBanner" onclick="applyVoucher()">
       <div class="voucher-left">
         <div class="voucher-icon"><i class="fas fa-percent"></i></div>
         <div>
           <div class="voucher-title-row">
-            <span class="voucher-discount">Diskon 100%</span>
-            <span class="voucher-badge">Belanja Pertama</span>
+            <span class="voucher-discount">Voucher 100% Gacor</span>
+            <span class="voucher-badge">MEMBER BARU</span>
           </div>
-          <div class="voucher-subtext">Pakai voucher sebelum berakhir!</div>
+          <div class="voucher-subtext">Pakai voucher sebelum waktu habis!</div>
         </div>
       </div>
       <div class="voucher-right">
         <div class="timer-box">
-          <span class="timer-digit" id="timerHours">14</span>
+          <span class="timer-digit" id="timerHours">12</span>
           <span class="timer-colon">:</span>
-          <span class="timer-digit" id="timerMinutes">45</span>
+          <span class="timer-digit" id="timerMinutes">30</span>
           <span class="timer-colon">:</span>
-          <span class="timer-digit" id="timerSeconds">02</span>
+          <span class="timer-digit" id="timerSeconds">00</span>
         </div>
         <span class="close-voucher" onclick="event.stopPropagation(); closeVoucher();">&times;</span>
       </div>
@@ -437,19 +456,18 @@
         <i class="fas fa-house"></i>
         <span>Beranda</span>
       </div>
-      <div class="nav-item" onclick="switchTab(this, 'Shopee Drama')">
-        <i class="fas fa-clapperboard"></i>
-        <span>Shopee Drama</span>
+      <div class="nav-item" onclick="openOrdersModal()">
+        <i class="fas fa-clock-rotate-left"></i>
+        <span>Pesanan Saya</span>
       </div>
-      <div class="nav-item" onclick="switchTab(this, 'Live & Video')">
-        <i class="fas fa-tv"></i>
-        <span class="badge-pill">Baru</span>
-        <span>Live & Video</span>
+      <div class="nav-item" onclick="openCartModal()">
+        <i class="fas fa-cart-shopping"></i>
+        <span class="badge-pill" id="navCartCount">0</span>
+        <span>Keranjang</span>
       </div>
-      <div class="nav-item" onclick="switchTab(this, 'Notifikasi')">
-        <i class="fas fa-bell"></i>
-        <span class="badge-pill">8</span>
-        <span>Notifikasi</span>
+      <div class="nav-item" onclick="showToast('Fitur CS Live 24 Jam!')">
+        <i class="fas fa-headset"></i>
+        <span>Live Chat</span>
       </div>
       <div class="nav-item" onclick="openAdminDashboard()">
         <i class="fas fa-user-shield"></i>
@@ -483,34 +501,55 @@
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeCartModal()">&times;</span>
-      <h3 style="margin-bottom: 15px; color: var(--shopee-orange); font-size: 16px;"><i class="fas fa-cart-shopping"></i> Checkout Pesanan</h3>
+      <h3 style="margin-bottom: 15px; color: var(--slot-gold); font-size: 16px;"><i class="fas fa-cart-shopping"></i> Checkout Pesanan</h3>
       
       <div id="cartItemsList"></div>
       
       <div style="display: flex; justify-content: space-between; font-weight: bold; margin: 15px 0; font-size: 14px;">
-        <span>Total Bayar:</span>
-        <span style="color: var(--shopee-orange);" id="modalTotalPrice">Rp 0</span>
+        <span>Total Tagihan:</span>
+        <span style="color: var(--slot-gold);" id="modalTotalPrice">Rp 0</span>
       </div>
 
-      <hr style="margin-bottom: 15px; border: 0; border-top: 1px dashed #ccc;">
+      <hr style="margin-bottom: 15px; border: 0; border-top: 1px dashed #444;">
 
       <form onsubmit="handleCheckoutSubmit(event)">
         <div class="form-group">
-          <label>Nama Lengkap*</label>
+          <label>Nama Lengkap Pembeli*</label>
           <input type="text" id="custName" placeholder="Contoh: Budi Santoso" required>
         </div>
         <div class="form-group">
-          <label>Nomor Telepon / HP*</label>
+          <label>Nomor WhatsApp / HP*</label>
           <input type="tel" id="custPhone" placeholder="Contoh: 081234567890" required>
         </div>
         <div class="form-group">
           <label>Alamat Lengkap Pengiriman*</label>
           <textarea id="custAddress" rows="2" placeholder="Nama jalan, RT/RW, Kecamatan, Kota" required></textarea>
         </div>
+        <div class="form-group">
+          <label>Metode Pembayaran*</label>
+          <select id="paymentMethod" required>
+            <option value="QRIS / Transfer Bank">QRIS / Transfer Bank (Otomatis)</option>
+            <option value="E-Wallet (Dana/OVO/Gopay)">E-Wallet (Dana/OVO/Gopay)</option>
+            <option value="COD (Bayar Di Tempat)">COD (Bayar Di Tempat)</option>
+          </select>
+        </div>
+
         <button type="submit" class="btn-buy" style="padding: 12px; font-size: 14px; margin-top: 5px;">
-          <i class="fas fa-check-circle"></i> Selesaikan Pesanan
+          <i class="fas fa-check-circle"></i> Buat Pesanan Sekarang
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL STATUS PESANAN (CEK SUDAH BAYAR / BELUM) -->
+  <div class="modal" id="ordersModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeOrdersModal()">&times;</span>
+      <h3 style="margin-bottom: 15px; color: var(--slot-gold); font-size: 16px;"><i class="fas fa-receipt"></i> Status Pesanan Saya</h3>
+      
+      <div id="myOrdersList">
+        <!-- Render status pesanan pelanggan -->
+      </div>
     </div>
   </div>
 
@@ -518,27 +557,34 @@
 
   <script>
     let cart = [];
+    let allProducts = [];
 
-    // --- DATA DEFAULT DUMMY JIKA KOSONG ---
+    // DATA DUMMY
     const defaultProducts = [
       {
         id: 101,
-        title: "ONGKIR Rp0 SE-INDONESIA Promo Spesial",
-        price: 0,
+        title: "KNALPOT RACING PRO SLOT EDITION",
+        price: 150000,
         image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80",
-        desc: "Nikmati promo ongkir Rp0 ke seluruh Indonesia untuk semua pilihan barang pertama kamu!"
+        desc: "Knalpot suara gahar maxwin, bahan stainless steel anti karat murni."
       },
       {
         id: 102,
-        title: "GELANG TANGAN RANTAI 3mm - 11mm TITANIUM",
-        price: 0,
+        title: "GELANG EMAS TITANIUM VIP SLOT",
+        price: 88000,
         image: "https://images.unsplash.com/photo-1611591475111-a831e5f8f830?w=500&q=80",
-        desc: "Gelang Tangan Rantai Titanium Anti Karat, Awet & Elegan. Diskon Puncak 90% OFF."
+        desc: "Gelang emas lapis hoki tinggi, mengkilap tahan lama anti pudar."
+      },
+      {
+        id: 103,
+        title: "HELM FULL FACE BLACK GOLD EDITION",
+        price: 350000,
+        image: "https://images.unsplash.com/photo-1558980394-da1f85d3b540?w=500&q=80",
+        desc: "Helm keren dengan desain emas kasino modern standar SNI."
       }
     ];
 
     function openAdminDashboard() {
-      // Mengarahkan ke halaman admin.html
       window.location.href = 'admin.html';
     }
 
@@ -547,10 +593,11 @@
     }
 
     function applyVoucher() {
-      showToast("Voucher Diskon 100% Berhasil Dipakai!");
+      showToast("Voucher Diskon Maxwin Berhasil Dipakai!");
     }
 
-    let totalSeconds = (14 * 3600) + (45 * 60) + 2;
+    // COUNTDOWN TIMER
+    let totalSeconds = (12 * 3600) + (30 * 60);
     setInterval(() => {
       if (totalSeconds > 0) {
         totalSeconds--;
@@ -567,7 +614,7 @@
     function switchTab(element, tabName) {
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
-      showToast("Membuka menu: " + tabName);
+      showToast("Membuka tab: " + tabName);
     }
 
     function showToast(msg) {
@@ -577,12 +624,21 @@
       setTimeout(() => { toast.classList.remove('show'); }, 2000);
     }
 
-    function renderProducts() {
+    // RENDER PRODUK
+    function renderProducts(productsToRender) {
       const grid = document.getElementById('productGrid');
-      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
+      let products = productsToRender || JSON.parse(localStorage.getItem('sopy_products') || '[]');
 
-      if (products.length === 0) {
+      if (products.length === 0 && !productsToRender) {
         products = defaultProducts;
+        localStorage.setItem('sopy_products', JSON.stringify(defaultProducts));
+      }
+
+      allProducts = products;
+
+      if(products.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:20px; color:#aaa;">Barang tidak ditemukan...</div>';
+        return;
       }
 
       let html = '';
@@ -603,11 +659,15 @@
       grid.innerHTML = html;
     }
 
-    function openProductDetail(productId) {
-      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
-      if(products.length === 0) products = defaultProducts;
+    // FITUR SEARCH BARANG REAL-TIME
+    function searchProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allProducts.filter(p => p.title.toLowerCase().includes(query));
+      renderProducts(filtered);
+    }
 
-      const target = products.find(p => p.id === productId);
+    function openProductDetail(productId) {
+      const target = allProducts.find(p => p.id === productId);
       if (!target) return;
 
       document.getElementById('detailImg').src = target.image;
@@ -634,10 +694,7 @@
     }
 
     function addToCart(productId) {
-      let products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
-      if(products.length === 0) products = defaultProducts;
-
-      const target = products.find(p => p.id === productId);
+      const target = allProducts.find(p => p.id === productId);
       if (!target) return;
 
       const existing = cart.find(item => item.id === productId);
@@ -648,17 +705,18 @@
       }
 
       updateCartBadge();
-      showToast("Produk ditambah ke keranjang!");
+      showToast("Produk masuk ke keranjang!");
     }
 
     function updateCartBadge() {
       const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
       document.getElementById('cartCount').innerText = totalQty;
+      document.getElementById('navCartCount').innerText = totalQty;
     }
 
     function openCartModal() {
       if (cart.length === 0) {
-        alert("Keranjang belanjaan Anda masih kosong!");
+        alert("Keranjang belanjaan Anda kosong!");
         return;
       }
 
@@ -673,11 +731,11 @@
           <div class="cart-item">
             <div>
               <b>${item.title}</b><br>
-              <span style="color:#666;">Rp ${Number(item.price).toLocaleString('id-ID')} x ${item.qty}</span>
+              <span style="color:#aaa;">Rp ${Number(item.price).toLocaleString('id-ID')} x ${item.qty}</span>
             </div>
             <div>
-              <b style="color:var(--shopee-orange);">Rp ${itemSubtotal.toLocaleString('id-ID')}</b>
-              <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; margin-left:8px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+              <b style="color:var(--slot-gold);">Rp ${itemSubtotal.toLocaleString('id-ID')}</b>
+              <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--slot-red); margin-left:8px; cursor:pointer;"><i class="fas fa-trash"></i></button>
             </div>
           </div>
         `;
@@ -702,12 +760,14 @@
       document.getElementById('checkoutModal').style.display = 'none';
     }
 
+    // CHECKOUT FITUR (SIMPAN STATUS PEMBAYARAN)
     function handleCheckoutSubmit(e) {
       e.preventDefault();
 
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
       const address = document.getElementById('custAddress').value.trim();
+      const paymentMethod = document.getElementById('paymentMethod').value;
       const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
       const newOrder = {
@@ -716,22 +776,74 @@
         customerName: name,
         customerPhone: phone,
         customerAddress: address,
+        paymentMethod: paymentMethod,
         items: cart,
-        totalPrice: grandTotal
+        totalPrice: grandTotal,
+        paymentStatus: 'Belum Dibayar' // DEFAULT BELUM DIBAYAR
       };
 
       const currentOrders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
       currentOrders.unshift(newOrder);
       localStorage.setItem('sopy_orders', JSON.stringify(currentOrders));
 
-      alert("Terima kasih! Pesanan Anda berhasil dibuat dan dikirim ke Admin.");
+      alert("Pesanan Anda berhasil dibuat! Silahkan selesaikan pembayaran.");
 
       cart = [];
       updateCartBadge();
       closeCartModal();
-      document.getElementById('custName').value = '';
-      document.getElementById('custPhone').value = '';
-      document.getElementById('custAddress').value = '';
+      
+      // Buka modal pesanan saya
+      openOrdersModal();
+    }
+
+    // LIHAT MODAL STATUS PESANAN PEMBELI
+    function openOrdersModal() {
+      const orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
+      const container = document.getElementById('myOrdersList');
+
+      if (orders.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:#aaa; padding:20px;">Belum ada riwayat pesanan.</div>';
+      } else {
+        let html = '';
+        orders.forEach((ord, index) => {
+          const isPaid = ord.paymentStatus === 'Sudah Dibayar';
+          html += `
+            <div style="background:#222; border:1px solid #444; border-radius:6px; padding:12px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-weight:bold; font-size:12px; color:var(--slot-gold);">${ord.id}</span>
+                <span class="status-badge ${isPaid ? 'status-paid' : 'status-unpaid'}">
+                  ${ord.paymentStatus}
+                </span>
+              </div>
+              <div style="font-size:11px; color:#ccc; margin-bottom:4px;">Metode: <b>${ord.paymentMethod || 'QRIS'}</b></div>
+              <div style="font-size:11px; color:#ccc; margin-bottom:8px;">Total Tagihan: <b style="color:var(--slot-gold);">Rp ${Number(ord.totalPrice).toLocaleString('id-ID')}</b></div>
+              
+              ${!isPaid ? `
+                <button onclick="payOrderNow(${index})" class="btn-buy" style="font-size:11px; padding:6px; width:100%;">
+                  <i class="fas fa-wallet"></i> Konfirmasi Sudah Bayar
+                </button>
+              ` : `
+                <div style="font-size:10px; color:#81c784; text-align:center;"><i class="fas fa-circle-check"></i> Pembayaran Terverifikasi</div>
+              `}
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      }
+
+      document.getElementById('ordersModal').style.display = 'flex';
+    }
+
+    function payOrderNow(orderIndex) {
+      let orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
+      orders[orderIndex].paymentStatus = 'Sudah Dibayar';
+      localStorage.setItem('sopy_orders', JSON.stringify(orders));
+      showToast("Status berhasil diubah menjadi Sudah Dibayar!");
+      openOrdersModal();
+    }
+
+    function closeOrdersModal() {
+      document.getElementById('ordersModal').style.display = 'none';
     }
 
     renderProducts();
