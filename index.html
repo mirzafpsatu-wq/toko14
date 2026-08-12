@@ -279,10 +279,21 @@
     /* PROFIL SAYA */
     .profile-container { background: var(--slot-bg); color: var(--slot-text); min-height: 100vh; width: 100%; max-width: 500px; margin: 0 auto; position: relative; border-left: 1px solid #333; border-right: 1px solid #333; }
     .profile-header { background: linear-gradient(135deg, #1c1a00, #3a3200); padding: 20px 15px; color: var(--slot-gold); border-bottom: 2px solid var(--slot-gold); position: relative; }
-    .profile-top-bar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; }
+    .profile-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .profile-user-info { display: flex; align-items: center; gap: 12px; }
     .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: #111; border: 2px solid var(--slot-gold); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--slot-gold); }
     
+    .btn-logout-profile {
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .header-admin-btn {
       background: rgba(0,0,0,0.6);
       color: var(--slot-gold);
@@ -332,6 +343,11 @@
       font-size: 12px;
       color: #fff;
     }
+
+    /* TOGGLE LOGIN/REGISTER */
+    .auth-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #333; }
+    .auth-tab { flex: 1; text-align: center; padding: 8px; cursor: pointer; font-size: 13px; font-weight: bold; color: #888; }
+    .auth-tab.active { color: var(--slot-gold); border-bottom: 2px solid var(--slot-gold); }
   </style>
 </head>
 <body>
@@ -366,14 +382,15 @@
   <!-- FIXED BOTTOM BAR -->
   <div class="fixed-bottom-container">
     <nav class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab(this)">
+      <div class="nav-item active" onclick="switchTab(this); showBeranda();">
         <i class="fas fa-house"></i>
         <span>Beranda</span>
       </div>
 
-      <div class="nav-item" onclick="switchTab(this)">
-        <i class="fas fa-video"></i>
-        <span>Shopee Video</span>
+      <!-- NAV ITEM TENGAH: LOGIN / STATUS LOGIN DINAMIS -->
+      <div class="nav-item" id="middleNavItem" onclick="handleMiddleNavClick()">
+        <i class="fas fa-right-to-bracket" id="middleNavIcon"></i>
+        <span id="middleNavText">Login</span>
       </div>
 
       <div class="nav-item" onclick="openProfileModal()">
@@ -381,6 +398,52 @@
         <span>Saya</span>
       </div>
     </nav>
+  </div>
+
+  <!-- MODAL LOGIN / REGISTER -->
+  <div class="modal" id="loginModal">
+    <div class="checkout-box animated-pop">
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Masuk</div>
+        <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Daftar</div>
+      </div>
+
+      <!-- FORM LOGIN -->
+      <form id="formLogin" onsubmit="submitLogin(event)">
+        <div class="form-group">
+          <label>Username / Email</label>
+          <input type="text" id="loginUser" required placeholder="Masukkan username">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" required placeholder="Masukkan password">
+        </div>
+        <button type="submit" class="btn-buy-direct" style="width:100%; margin-top: 10px; padding: 10px; background:var(--gold-gradient); color:#000; font-weight:bold;">
+          Masuk Sekarang
+        </button>
+        <button type="button" onclick="closeLoginModal()" style="background: none; border: none; color: #888; width: 100%; margin-top: 8px; font-size: 12px; cursor: pointer;">Tutup</button>
+      </form>
+
+      <!-- FORM REGISTER -->
+      <form id="formRegister" onsubmit="submitRegister(event)" style="display: none;">
+        <div class="form-group">
+          <label>Username Baru</label>
+          <input type="text" id="regUser" required placeholder="Buat username">
+        </div>
+        <div class="form-group">
+          <label>Nomor WhatsApp</label>
+          <input type="tel" id="regPhone" required placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="regPass" required placeholder="Buat password">
+        </div>
+        <button type="submit" class="btn-buy-direct" style="width:100%; margin-top: 10px; padding: 10px; background:var(--gold-gradient); color:#000; font-weight:bold;">
+          Daftar Akun
+        </button>
+        <button type="button" onclick="closeLoginModal()" style="background: none; border: none; color: #888; width: 100%; margin-top: 8px; font-size: 12px; cursor: pointer;">Tutup</button>
+      </form>
+    </div>
   </div>
 
   <!-- MODAL KERANJANG -->
@@ -413,19 +476,20 @@
     </div>
   </div>
 
-  <!-- MODAL PROFIL SAYA -->
+  <!-- MODAL PROFIL SAYA (CUSTOMER PAGE) -->
   <div class="modal" id="profileModal">
     <div class="profile-container animated-pop">
       <div class="profile-header">
         <button class="close-profile-btn" onclick="closeProfileModal()"><i class="fas fa-arrow-left"></i></button>
         <div class="profile-top-bar">
           <a href="admin.html" class="header-admin-btn"><i class="fas fa-user-shield"></i> Admin VIP</a>
+          <button class="btn-logout-profile" onclick="processLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
         <div class="profile-user-info">
           <div class="profile-avatar"><i class="fas fa-user-ninja"></i></div>
           <div>
-            <div style="font-weight: bold; font-size: 16px; color: #fff;">yantoyanti700</div>
-            <span style="background: var(--gold-gradient); color: #000; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">TITANIUM VIP SLOT</span>
+            <div id="profileUsernameDisplay" style="font-weight: bold; font-size: 16px; color: #fff;">yantoyanti700</div>
+            <span id="profileUserBadge" style="background: var(--gold-gradient); color: #000; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">TITANIUM VIP SLOT</span>
           </div>
         </div>
       </div>
@@ -517,13 +581,14 @@
       { id: 8, title: "KNALPOT RACING PRO SLOT EDITION STAINLESS", price: 150000, discount: "-35%", sold: "1,8RB terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80" }
     ];
 
+    let currentUser = localStorage.getItem('sopy_logged_user') || null;
+
     function initDefaultOrders() {
       const existing = localStorage.getItem('sopy_orders');
       if (!existing) {
         const dummyOrders = [
           { id: 'ORD-577825', productName: 'BLOK GREND 55 RACING SET FULL SYSTEM', totalPrice: 245000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' },
-          { id: 'ORD-689392', productName: 'KNALPOT RACING PRO SLOT EDITION', totalPrice: 150000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' },
-          { id: 'ORD-862606', productName: 'KNALPOT RACING PRO SLOT EDITION', totalPrice: 150000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' }
+          { id: 'ORD-689392', productName: 'KNALPOT RACING PRO SLOT EDITION', totalPrice: 150000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' }
         ];
         localStorage.setItem('sopy_orders', JSON.stringify(dummyOrders));
       }
@@ -532,6 +597,82 @@
     let currentBuyingProduct = null;
     let selectedCategory = 'semua';
     let currentPayOrderId = null;
+
+    /* FUNGSI LOGIN & AUTENTIKASI STATUS */
+    function checkAuthUI() {
+      const middleNavText = document.getElementById('middleNavText');
+      const middleNavIcon = document.getElementById('middleNavIcon');
+
+      if (currentUser) {
+        middleNavText.innerText = currentUser;
+        middleNavIcon.className = "fas fa-user-check";
+      } else {
+        middleNavText.innerText = "Login";
+        middleNavIcon.className = "fas fa-right-to-bracket";
+      }
+    }
+
+    function handleMiddleNavClick() {
+      if (currentUser) {
+        openProfileModal();
+      } else {
+        openLoginModal();
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').style.display = 'block';
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function switchAuthTab(tab) {
+      if(tab === 'login') {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('tabRegister').classList.remove('active');
+        document.getElementById('formLogin').style.display = 'block';
+        document.getElementById('formRegister').style.display = 'none';
+      } else {
+        document.getElementById('tabRegister').classList.add('active');
+        document.getElementById('tabLogin').classList.remove('active');
+        document.getElementById('formRegister').style.display = 'block';
+        document.getElementById('formLogin').style.display = 'none';
+      }
+    }
+
+    function submitLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value;
+      currentUser = u;
+      localStorage.setItem('sopy_logged_user', u);
+      alert('Login berhasil! Selamat datang, ' + u);
+      closeLoginModal();
+      checkAuthUI();
+      openProfileModal(); // Buka profil customer setelah login
+    }
+
+    function submitRegister(e) {
+      e.preventDefault();
+      const u = document.getElementById('regUser').value;
+      currentUser = u;
+      localStorage.setItem('sopy_logged_user', u);
+      alert('Pendaftaran berhasil! Otomatis masuk sebagai ' + u);
+      closeLoginModal();
+      checkAuthUI();
+      openProfileModal(); // Buka profil customer setelah mendaftar
+    }
+
+    function processLogout() {
+      if (confirm("Apakah Anda yakin ingin keluar dari akun ini?")) {
+        currentUser = null;
+        localStorage.removeItem('sopy_logged_user');
+        closeProfileModal();
+        checkAuthUI();
+        alert("Anda telah berhasil keluar.");
+      }
+    }
 
     function renderProducts(items) {
       const grid = document.getElementById('productGridList');
@@ -610,7 +751,6 @@
       saveCartItems(cart);
     }
 
-    /* BUKA MODAL KERANJANG LENGKAP DENGAN TOMBOL PLUS & MINUS */
     function openCartModal() {
       const cart = getCartItems();
       const container = document.getElementById('cartItemsList');
@@ -630,8 +770,6 @@
               <div class="cart-item-info">
                 <div class="cart-item-title">${item.title}</div>
                 <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
-                
-                <!-- KONTROL NIKMATI / TAMBAH KUANTITAS -->
                 <div class="cart-qty-control">
                   <div class="qty-btn" onclick="changeQty(${idx}, -1)">-</div>
                   <span class="qty-number">${item.qty}</span>
@@ -649,7 +787,6 @@
       document.getElementById('cartModal').style.display = 'block';
     }
 
-    /* UBAH KUANTITAS (+) ATAU (-) */
     function changeQty(idx, delta) {
       const cart = getCartItems();
       if (!cart[idx]) return;
@@ -661,7 +798,7 @@
       }
 
       saveCartItems(cart);
-      openCartModal(); // Refresh tampilan modal
+      openCartModal();
     }
 
     function closeCartModal() { document.getElementById('cartModal').style.display = 'none'; }
@@ -674,6 +811,13 @@
     }
 
     function checkoutFromCart() {
+      if (!currentUser) {
+        closeCartModal();
+        alert("Silakan login terlebih dahulu untuk checkout.");
+        openLoginModal();
+        return;
+      }
+
       const cart = getCartItems();
       if (cart.length === 0) return;
       let total = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
@@ -683,6 +827,13 @@
     }
 
     function openCheckout(title, price) {
+      // PROTEKSI: Harus Login Terlebih Dahulu
+      if (!currentUser) {
+        alert("Silakan login terlebih dahulu untuk melakukan pembelian.");
+        openLoginModal();
+        return;
+      }
+
       currentBuyingProduct = { title, price };
       document.getElementById('buyItemTitle').innerText = title + " - Total: Rp " + price.toLocaleString('id-ID');
       document.getElementById('checkoutModal').style.display = 'block';
@@ -721,7 +872,16 @@
       filterOrders(payStatus);
     }
 
+    /* BUKA PROFIL / HALAMAN CUSTOMER (DENGAN CEK LOGIN) */
     function openProfileModal() {
+      // PROTEKSI: Jika belum login, paksa ke form login
+      if (!currentUser) {
+        alert("Anda harus login terlebih dahulu untuk mengakses menu profil/pesanan customer.");
+        openLoginModal();
+        return;
+      }
+
+      document.getElementById('profileUsernameDisplay').innerText = currentUser;
       document.getElementById('profileModal').style.display = 'block';
       filterOrders('Belum Dibayar');
     }
@@ -844,10 +1004,16 @@
       el.classList.add('active');
     }
 
+    function showBeranda() {
+      closeProfileModal();
+      closeCartModal();
+    }
+
     // INITIALIZATION
     initDefaultOrders();
     renderProducts(productsData);
     updateCartBadge();
+    checkAuthUI();
   </script>
 </body>
 </html>
