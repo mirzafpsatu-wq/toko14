@@ -45,8 +45,8 @@
 
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #555; }
-    .form-group input, .form-group textarea { 
-      width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; 
+    .form-group input, .form-group textarea, .form-group select { 
+      width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fff;
     }
 
     .btn-submit { 
@@ -71,13 +71,22 @@
     th, td { padding: 10px 8px; border-bottom: 1px solid #eee; font-size: 12px; text-align: left; vertical-align: middle; }
     th { background: #fafafa; font-weight: 600; color: #555; }
     .img-thumb { width: 42px; height: 42px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; background: #eee; }
-    
-    .btn-del { 
-      background: #fff; color: #dc3545; border: 1px solid #dc3545; 
-      padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;
-    }
 
-    .badge-status { background: #e6f4ea; color: #137333; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; display: inline-block; }
+    /* DROPDOWN STATUS PESANAN */
+    .select-status {
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      border: 1px solid #ccc;
+      outline: none;
+      cursor: pointer;
+    }
+    .status-belum { background: #ffebee; color: #c62828; border-color: #ef9a9a; }
+    .status-dikemas { background: #fff3e0; color: #ef6c00; border-color: #ffe0b2; }
+    .status-dikirim { background: #e3f2fd; color: #1565c0; border-color: #90caf9; }
+    .status-selesai { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+
     .customer-info { font-size: 11px; color: #444; line-height: 1.5; }
     .product-list-small { font-size: 11px; color: #333; list-style: disc; padding-left: 15px; }
 
@@ -141,7 +150,6 @@
     <div class="card">
       <div class="card-title">
         <span><i class="fas fa-file-invoice-dollar"></i> Data Pesanan Customer Masuk</span>
-        <button onclick="clearOrders()" style="background:none; border:none; color:#dc3545; font-size:11px; cursor:pointer;"><i class="fas fa-trash-alt"></i> Bersihkan Histori</button>
       </div>
       <div class="table-container">
         <table>
@@ -151,8 +159,7 @@
               <th>Data Pembeli</th>
               <th>Item Dibeli</th>
               <th>Total Bayar</th>
-              <th>Status</th>
-              <th>Aksi</th>
+              <th>Status Pesanan</th>
             </tr>
           </thead>
           <tbody id="ordersTableBody"></tbody>
@@ -175,6 +182,17 @@
         <div class="form-group">
           <label>Harga (Rp)*</label>
           <input type="number" id="prodPrice" placeholder="Contoh: 85000" required>
+        </div>
+
+        <div class="form-group">
+          <label>Kategori Produk*</label>
+          <select id="prodCategory" required>
+            <option value="otomotif">Otomotif</option>
+            <option value="fashion">Fashion</option>
+            <option value="elektronik">Elektronik</option>
+            <option value="sepatu">Sepatu</option>
+            <option value="aksesoris">Aksesoris</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -209,8 +227,8 @@
             <tr>
               <th>Foto</th>
               <th>Nama Produk</th>
+              <th>Kategori</th>
               <th>Harga</th>
-              <th>Aksi</th>
             </tr>
           </thead>
           <tbody id="adminTableBody"></tbody>
@@ -302,12 +320,14 @@
 
       const title = document.getElementById('prodTitle').value.trim();
       const price = document.getElementById('prodPrice').value;
+      const category = document.getElementById('prodCategory').value;
       const desc = document.getElementById('prodDesc').value.trim();
 
       const newProduct = {
         id: Date.now(),
         title: title,
         price: Number(price),
+        category: category,
         desc: desc || "Produk berkualitas dari toko kami.",
         image: photoData
       };
@@ -342,13 +362,13 @@
       }
 
       let html = '';
-      products.forEach((p, idx) => {
+      products.forEach((p) => {
         html += `
           <tr>
             <td><img src="${p.image}" class="img-thumb"></td>
             <td><b>${p.title}</b></td>
+            <td><span style="text-transform:capitalize; font-size:11px; background:#f0f0f0; padding:2px 6px; border-radius:4px;">${p.category || 'umum'}</span></td>
             <td style="color:var(--shopee-orange); font-weight:600;">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
-            <td><button class="btn-del" onclick="deleteProduct(${idx})"><i class="fas fa-trash"></i> Hapus</button></td>
           </tr>
         `;
       });
@@ -365,19 +385,29 @@
       document.getElementById('totalRevenueCount').innerText = 'Rp ' + totalRevenue.toLocaleString('id-ID');
 
       if (orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888; padding:15px;">Belum ada pesanan masuk dari customer.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#888; padding:15px;">Belum ada pesanan masuk dari customer.</td></tr>`;
         return;
       }
 
       let html = '';
       orders.forEach((o, index) => {
-        let itemsHtml = '<ul class="product-list-small">';
+        let itemsHtml = '';
         if (Array.isArray(o.items) && o.items.length > 0) {
+          itemsHtml = '<ul class="product-list-small">';
           o.items.forEach(item => {
             itemsHtml += `<li><b>${item.title}</b> (x${item.qty || 1}) - Rp ${Number(item.price).toLocaleString('id-ID')}</li>`;
           });
+          itemsHtml += '</ul>';
+        } else {
+          itemsHtml = `<b>${o.productName || 'Produk'}</b>`;
         }
-        itemsHtml += '</ul>';
+
+        const currentStatus = o.paymentStatus || 'Belum Dibayar';
+
+        let statusClass = 'status-belum';
+        if (currentStatus === 'Dikemas') statusClass = 'status-dikemas';
+        if (currentStatus === 'Dikirim') statusClass = 'status-dikirim';
+        if (currentStatus === 'Selesai') statusClass = 'status-selesai';
 
         html += `
           <tr>
@@ -394,9 +424,13 @@
             </td>
             <td>${itemsHtml}</td>
             <td style="color:var(--shopee-orange); font-weight:700;">Rp ${Number(o.totalPrice || 0).toLocaleString('id-ID')}</td>
-            <td><span class="badge-status">Pesanan Masuk</span></td>
             <td>
-              <button class="btn-del" onclick="deleteSingleOrder(${index})" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>
+              <select class="select-status ${statusClass}" onchange="changeOrderStatus(${index}, this.value, this)">
+                <option value="Belum Dibayar" ${currentStatus === 'Belum Dibayar' ? 'selected' : ''}>Belum Dibayar</option>
+                <option value="Dikemas" ${currentStatus === 'Dikemas' ? 'selected' : ''}>Dikemas</option>
+                <option value="Dikirim" ${currentStatus === 'Dikirim' ? 'selected' : ''}>Dikirim</option>
+                <option value="Selesai" ${currentStatus === 'Selesai' ? 'selected' : ''}>Selesai</option>
+              </select>
             </td>
           </tr>
         `;
@@ -404,31 +438,19 @@
       tbody.innerHTML = html;
     }
 
-    function deleteProduct(idx) {
-      if(confirm("Hapus produk ini dari toko?")) {
-        const products = JSON.parse(localStorage.getItem('sopy_products') || '[]');
-        products.splice(idx, 1);
-        localStorage.setItem('sopy_products', JSON.stringify(products));
-        showToast("Produk dihapus!");
-        loadProductsTable();
-      }
-    }
-
-    function deleteSingleOrder(idx) {
-      if(confirm("Hapus data pesanan ini?")) {
-        const orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
-        orders.splice(idx, 1);
+    function changeOrderStatus(orderIndex, newStatus, selectElement) {
+      const orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
+      if (orders[orderIndex]) {
+        orders[orderIndex].paymentStatus = newStatus;
         localStorage.setItem('sopy_orders', JSON.stringify(orders));
-        showToast("Pesanan dihapus!");
-        loadOrdersTable();
-      }
-    }
 
-    function clearOrders() {
-      if(confirm("Yakin ingin menghapus seluruh riwayat pesanan customer?")) {
-        localStorage.removeItem('sopy_orders');
-        showToast("Riwayat pesanan dibersihkan!");
-        loadOrdersTable();
+        selectElement.className = 'select-status ';
+        if (newStatus === 'Belum Dibayar') selectElement.classList.add('status-belum');
+        if (newStatus === 'Dikemas') selectElement.classList.add('status-dikemas');
+        if (newStatus === 'Dikirim') selectElement.classList.add('status-dikirim');
+        if (newStatus === 'Selesai') selectElement.classList.add('status-selesai');
+
+        showToast("Status pesanan diperbarui!");
       }
     }
 
