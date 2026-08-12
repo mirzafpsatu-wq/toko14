@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sopy Online Shop - Slot Casino Theme</title>
+  <title>Sopy Online Shop - Full Catalogue</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root { 
@@ -46,6 +46,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      transition: transform 0.2s;
     }
     .badge-cart-top {
       position: absolute;
@@ -59,7 +60,35 @@
       font-weight: bold;
     }
 
-    /* GRID PRODUK DENGAN ANIMASI GAMBAR */
+    /* KATEGORI FILTER BAR */
+    .category-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 2px 0;
+      scrollbar-width: none;
+    }
+    .category-bar::-webkit-scrollbar { display: none; }
+    
+    .cat-btn {
+      background: #222;
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cat-btn.active, .cat-btn:hover {
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: bold;
+      border-color: var(--slot-gold);
+    }
+
+    /* GRID PRODUK */
     .container { max-width: 900px; margin: 15px auto; padding: 0 12px; }
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
     .product-card { 
@@ -71,30 +100,45 @@
       flex-direction: column; 
       justify-content: space-between;
       transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
     }
     .product-card:hover {
       transform: translateY(-4px);
       border-color: var(--slot-gold);
     }
 
-    .img-wrapper { overflow: hidden; position: relative; cursor: pointer; }
+    .img-wrapper { overflow: hidden; position: relative; cursor: pointer; height: 180px; background: #000; }
+    
     .product-img { 
       width: 100%; 
-      height: 160px; 
+      height: 100%; 
       object-fit: cover; 
-      background: #222; 
       display: block;
       transition: transform 0.4s ease;
     }
     .img-wrapper:hover .product-img {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
-    .product-info { padding: 10px; }
-    .product-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .product-price { color: var(--slot-gold); font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .discount-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ff0000;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 5px;
+      border-radius: 4px;
+      z-index: 2;
+    }
 
-    /* TOMBOL SEJALAN */
+    .product-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .product-title { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 32px; }
+    .product-price { color: var(--slot-gold); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .product-sold { font-size: 10px; color: #aaa; margin-bottom: 8px; }
+
+    /* TOMBOL AKSI */
     .action-btn-group { display: flex; gap: 6px; width: 100%; }
     .btn-cart { 
       flex: 1; 
@@ -110,7 +154,9 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
+      transition: transform 0.1s;
     }
+    .btn-cart:active { transform: scale(0.95); }
     .btn-buy-direct { 
       flex: 1; 
       background: #e50914; 
@@ -124,6 +170,22 @@
       text-align: center;
     }
 
+    .btn-pay-now {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.1s;
+    }
+    .btn-pay-now:active { transform: scale(0.95); }
+
     /* BOTTOM NAV BAR */
     .fixed-bottom-container { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 150; background: #121212; border-top: 1px solid var(--slot-gold); }
     .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 10px 0; }
@@ -131,18 +193,15 @@
     .nav-item i { font-size: 18px; margin-bottom: 3px; }
     .nav-item.active { color: var(--slot-gold); font-weight: bold; }
 
-    /* MODAL GENERAL & ANIMASI POP-UP */
+    /* MODAL GENERAL */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 200; overflow-y: auto; }
-    
-    .animated-pop {
-      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+    .animated-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     @keyframes popIn {
       from { transform: scale(0.7); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
-    /* TAMPILAN KERANJANG MODAL */
+    /* MODAL KERANJANG */
     .cart-modal-box {
       background: #1e1e1e;
       padding: 20px;
@@ -154,18 +213,52 @@
     }
     .cart-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 10px;
       background: #111;
       padding: 10px;
       border-radius: 6px;
       margin-bottom: 8px;
       border: 1px solid #333;
     }
-    .cart-item-title { font-size: 12px; color: #fff; font-weight: bold; }
-    .cart-item-price { font-size: 12px; color: var(--slot-gold); }
+    .cart-item-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #444;
+      flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; overflow: hidden; }
+    .cart-item-title { font-size: 11px; color: #fff; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-price { font-size: 12px; color: var(--slot-gold); margin-top: 2px; }
+    
+    /* KONTROL QUANTITY (+ / -) */
+    .cart-qty-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .qty-btn {
+      background: #2a2a2a;
+      border: 1px solid var(--slot-gold);
+      color: var(--slot-gold);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      user-select: none;
+    }
+    .qty-btn:active { background: var(--slot-gold); color: #000; }
+    .qty-number { font-size: 12px; color: #fff; font-weight: bold; min-width: 18px; text-align: center; }
 
-    /* MODAL PREVIEW GAMBAR */
+    /* PREVIEW MEDIA */
     .image-preview-box {
       max-width: 450px;
       margin: 60px auto;
@@ -176,10 +269,10 @@
       text-align: center;
       position: relative;
     }
-    .preview-img-full {
+    .preview-media-full {
       width: 100%;
       border-radius: 6px;
-      max-height: 350px;
+      max-height: 380px;
       object-fit: cover;
     }
 
@@ -220,8 +313,25 @@
     .form-group label { display: block; font-size: 12px; color: #aaa; margin-bottom: 4px; }
     .form-group input, .form-group select { width: 100%; padding: 8px; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 4px; }
     
-    .order-item-card { background: #111; border: 1px solid #333; padding: 10px; border-radius: 6px; margin-top: 8px; font-size: 12px; }
+    .order-item-card { background: #111; border: 1px solid #333; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; }
     .badge-status { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+
+    /* BOX LUNASI PEMBAYARAN */
+    .pay-detail-box {
+      background: #181818;
+      border: 1px solid var(--slot-gold);
+      border-radius: 6px;
+      padding: 12px;
+      margin: 10px 0;
+    }
+    .bank-acc-info {
+      background: #252525;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -231,20 +341,26 @@
     <div class="top-search-row">
       <div class="search-box">
         <i class="fas fa-magnifying-glass" style="color:var(--slot-gold);"></i>
-        <!-- INPUT SEARCH DIPASANG EVENT ONINPUT UNTUK SEARCH LANGSUNG -->
-        <input type="text" id="searchInput" oninput="searchProducts()" placeholder="Cari barang slot pilihanmu...">
+        <input type="text" id="searchInput" oninput="searchProducts()" placeholder="Cari Blok Grend 55, Piston, Ban...">
       </div>
-      <div class="header-cart-btn" onclick="openCartModal()">
+      <div class="header-cart-btn" id="cartHeaderIcon" onclick="openCartModal()">
         <i class="fas fa-cart-shopping"></i>
         <span class="badge-cart-top" id="topCartBadge">0</span>
       </div>
     </div>
+
+    <div class="category-bar">
+      <button class="cat-btn active" onclick="filterCategory('semua', this)">Semua</button>
+      <button class="cat-btn" onclick="filterCategory('otomotif', this)">Otomotif</button>
+      <button class="cat-btn" onclick="filterCategory('fashion', this)">Fashion</button>
+      <button class="cat-btn" onclick="filterCategory('elektronik', this)">Elektronik</button>
+      <button class="cat-btn" onclick="filterCategory('sepatu', this)">Sepatu</button>
+      <button class="cat-btn" onclick="filterCategory('aksesoris', this)">Aksesoris</button>
+    </div>
   </header>
 
   <div class="container">
-    <div class="product-grid" id="productGridList">
-      <!-- PRODUK DI-GENERATE OTOMATIS OLEH JAVASCRIPT AGAR BISA DI-SEARCH -->
-    </div>
+    <div class="product-grid" id="productGridList"></div>
   </div>
 
   <!-- FIXED BOTTOM BAR -->
@@ -256,8 +372,8 @@
       </div>
 
       <div class="nav-item" onclick="switchTab(this)">
-        <i class="fas fa-headset"></i>
-        <span>Live Chat</span>
+        <i class="fas fa-video"></i>
+        <span>Shopee Video</span>
       </div>
 
       <div class="nav-item" onclick="openProfileModal()">
@@ -267,7 +383,7 @@
     </nav>
   </div>
 
-  <!-- MODAL DAFTAR KERANJANG BELANJA -->
+  <!-- MODAL KERANJANG -->
   <div class="modal" id="cartModal">
     <div class="cart-modal-box animated-pop">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
@@ -287,13 +403,13 @@
     </div>
   </div>
 
-  <!-- MODAL PREVIEW GAMBAR -->
+  <!-- MODAL PREVIEW MEDIA -->
   <div class="modal" id="imageModal">
     <div class="image-preview-box animated-pop">
-      <button onclick="closeImagePreview()" style="position:absolute; top:8px; right:12px; background:none; border:none; color:var(--slot-gold); font-size:22px; cursor:pointer;">&times;</button>
+      <button onclick="closeMediaPreview()" style="position:absolute; top:8px; right:12px; background:none; border:none; color:var(--slot-gold); font-size:22px; cursor:pointer; z-index: 10;">&times;</button>
       <h4 id="previewTitle" style="color:var(--slot-gold); font-size:13px; margin-bottom:10px;"></h4>
-      <img id="previewImgSrc" class="preview-img-full" src="" alt="Preview">
-      <button class="btn-buy-direct" style="width:100%; margin-top:12px; padding:10px;" onclick="closeImagePreview()">Tutup Preview</button>
+      <div id="previewMediaContainer"></div>
+      <button class="btn-buy-direct" style="width:100%; margin-top:12px; padding:10px;" onclick="closeMediaPreview()">Tutup Preview</button>
     </div>
   </div>
 
@@ -302,61 +418,39 @@
     <div class="profile-container animated-pop">
       <div class="profile-header">
         <button class="close-profile-btn" onclick="closeProfileModal()"><i class="fas fa-arrow-left"></i></button>
-        
         <div class="profile-top-bar">
-          <a href="admin.html" class="header-admin-btn">
-            <i class="fas fa-user-shield"></i> Admin VIP
-          </a>
+          <a href="admin.html" class="header-admin-btn"><i class="fas fa-user-shield"></i> Admin VIP</a>
         </div>
-
         <div class="profile-user-info">
-          <div class="profile-avatar">
-            <i class="fas fa-user-ninja"></i>
-          </div>
+          <div class="profile-avatar"><i class="fas fa-user-ninja"></i></div>
           <div>
             <div style="font-weight: bold; font-size: 16px; color: #fff;">yantoyanti700</div>
             <span style="background: var(--gold-gradient); color: #000; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">TITANIUM VIP SLOT</span>
           </div>
         </div>
       </div>
-
       <div class="profile-card">
         <div class="card-title">
           <span><i class="fas fa-receipt"></i> Pesanan Saya</span>
           <span style="font-size: 11px; color: #aaa; cursor: pointer;" onclick="filterOrders('Semua')">Lihat Semua &gt;</span>
         </div>
-        
         <div class="grid-menu">
-          <button class="grid-btn" onclick="filterOrders('Belum Dibayar')">
-            <i class="fas fa-wallet"></i>Belum Bayar
-          </button>
-          <button class="grid-btn" onclick="filterOrders('Dikemas')">
-            <i class="fas fa-box"></i>Dikemas
-          </button>
-          <button class="grid-btn" onclick="filterOrders('Dikirim')">
-            <i class="fas fa-truck"></i>Dikirim
-          </button>
-          <button class="grid-btn" onclick="filterOrders('Selesai')">
-            <i class="fas fa-star"></i>Selesai
-          </button>
+          <button class="grid-btn" onclick="filterOrders('Belum Dibayar')"><i class="fas fa-wallet"></i>Belum Bayar</button>
+          <button class="grid-btn" onclick="filterOrders('Dikemas')"><i class="fas fa-box"></i>Dikemas</button>
+          <button class="grid-btn" onclick="filterOrders('Dikirim')"><i class="fas fa-truck"></i>Dikirim</button>
+          <button class="grid-btn" onclick="filterOrders('Selesai')"><i class="fas fa-star"></i>Selesai</button>
         </div>
-
-        <div id="selectedStatusTitle" style="font-size: 12px; color: var(--slot-gold); margin-top: 15px; font-weight: bold;">
-          Daftar Pesanan:
-        </div>
-
+        <div id="selectedStatusTitle" style="font-size: 12px; color: var(--slot-gold); margin-top: 15px; font-weight: bold;">Daftar Pesanan:</div>
         <div id="customerOrdersList"></div>
       </div>
-
     </div>
   </div>
 
-  <!-- MODAL CHECKOUT -->
+  <!-- MODAL CHECKOUT DARI DRAFT / BELI SEKARANG -->
   <div class="modal" id="checkoutModal">
     <div class="checkout-box animated-pop">
       <h3 style="color: var(--slot-gold); margin-bottom: 12px; font-size: 16px;"><i class="fas fa-credit-card"></i> Form Pembayaran</h3>
       <div id="buyItemTitle" style="font-size: 13px; font-weight: bold; margin-bottom: 12px; color: #fff;"></div>
-      
       <form onsubmit="submitOrder(event)">
         <div class="form-group">
           <label>Nama Lengkap</label>
@@ -383,32 +477,66 @@
     </div>
   </div>
 
+  <!-- MODAL LUNASI PEMBAYARAN -->
+  <div class="modal" id="payNowModal">
+    <div class="checkout-box animated-pop">
+      <h3 style="color: var(--slot-gold); margin-bottom: 12px; font-size: 16px;"><i class="fas fa-wallet"></i> Selesaikan Pembayaran</h3>
+      <div id="payOrderInfo" style="font-size: 12px; color: #fff; margin-bottom: 10px;"></div>
+      
+      <div class="pay-detail-box">
+        <label style="font-size: 11px; color:#aaa;">Pilih Metode Pembayaran:</label>
+        <select id="payMethodSelect" style="width:100%; padding:8px; margin-top:4px; background:#2a2a2a; color:#fff; border:1px solid #444; border-radius:4px;" onchange="updatePayInstruction()">
+          <option value="bca">Transfer BCA (Virtual Account)</option>
+          <option value="mandiri">Transfer Mandiri</option>
+          <option value="qris">QRIS (Gopay / OVO / Dana / ShopeePay)</option>
+        </select>
+
+        <div class="bank-acc-info" id="bankInstruction">
+          <div style="font-size:11px; color:#aaa;">Nomor BCA Virtual Account:</div>
+          <div style="font-size:16px; font-weight:bold; color:var(--slot-gold); margin:4px 0;">8830 0812 3456 7890</div>
+          <div style="font-size:10px; color:#888;">a.n Sopy Online Shop Official</div>
+        </div>
+      </div>
+
+      <button onclick="confirmPaymentProcess()" class="btn-buy-direct" style="width:100%; margin-top: 10px; padding: 10px; background:var(--gold-gradient); color:#000; font-weight:bold;">
+        <i class="fas fa-check-circle"></i> Konfirmasi Sudah Bayar
+      </button>
+      <button onclick="closePayNowModal()" style="background: none; border: none; color: #888; width: 100%; margin-top: 8px; font-size: 12px; cursor: pointer;">Bayar Nanti</button>
+    </div>
+  </div>
+
   <script>
-    // DATABASE PRODUK
     const productsData = [
-      {
-        id: 1,
-        title: "KNALPOT RACING PRO SLOT EDITION",
-        price: 150000,
-        img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80",
-        fullImg: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&q=80"
-      },
-      {
-        id: 2,
-        title: "HELM FULL FACE BLACK GOLD EDITION",
-        price: 350000,
-        img: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=500&q=80",
-        fullImg: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80"
-      }
+      { id: 1, title: "BLOK GREND 55 RACING SET FULL SYSTEM", price: 245000, discount: "-40%", sold: "1,2RB terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80" },
+      { id: 2, title: "[READY COD] BAN FDR SOFT COMPOUND MP-27 RACING TIRE", price: 85000, discount: "-50%", sold: "834 terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80" },
+      { id: 3, title: "[ORIGINAL] Karburator PE 24 26 28 Racing Edition", price: 87000, discount: "-50%", sold: "2,5RB terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=500&q=80" },
+      { id: 4, title: "AH1 PISTON CASTING MENTAH DOME SET PIN 13", price: 105000, discount: "-73%", sold: "240 terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&q=80" },
+      { id: 5, title: "Shockbreaker Original DBS G+ SERIES 8899 Shock Belakang", price: 156600, discount: "-30%", sold: "252 terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80" },
+      { id: 6, title: "SEPATU SNEAKERS URBAN GOLD RACING EDITION", price: 420000, discount: "-20%", sold: "512 terjual", category: "sepatu", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80" },
+      { id: 7, title: "JAM TANGAN MEWAH GOLD CHRONOGRAPH", price: 650000, discount: "-15%", sold: "98 terjual", category: "aksesoris", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" },
+      { id: 8, title: "KNALPOT RACING PRO SLOT EDITION STAINLESS", price: 150000, discount: "-35%", sold: "1,8RB terjual", category: "otomotif", img: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80" }
     ];
 
-    let currentBuyingProduct = null;
+    function initDefaultOrders() {
+      const existing = localStorage.getItem('sopy_orders');
+      if (!existing) {
+        const dummyOrders = [
+          { id: 'ORD-577825', productName: 'BLOK GREND 55 RACING SET FULL SYSTEM', totalPrice: 245000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' },
+          { id: 'ORD-689392', productName: 'KNALPOT RACING PRO SLOT EDITION', totalPrice: 150000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' },
+          { id: 'ORD-862606', productName: 'KNALPOT RACING PRO SLOT EDITION', totalPrice: 150000, paymentStatus: 'Belum Dibayar', date: '12/08/2026' }
+        ];
+        localStorage.setItem('sopy_orders', JSON.stringify(dummyOrders));
+      }
+    }
 
-    // FUNGSI TAMPILKAN PRODUK (WITH SEARCH FILTER)
+    let currentBuyingProduct = null;
+    let selectedCategory = 'semua';
+    let currentPayOrderId = null;
+
     function renderProducts(items) {
       const grid = document.getElementById('productGridList');
       if (items.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#888; padding:30px 0; font-size:13px;">Barang yang dicari tidak ditemukan...</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#888; padding:30px 0; font-size:13px;">Barang tidak ditemukan...</div>`;
         return;
       }
 
@@ -416,20 +544,21 @@
       items.forEach(prod => {
         html += `
           <div class="product-card">
-            <div class="img-wrapper" onclick="previewImage('${prod.fullImg}', '${prod.title}')">
+            <div class="img-wrapper" onclick="previewMedia('${prod.img}', '${prod.title}')">
+              ${prod.discount ? `<div class="discount-badge">${prod.discount}</div>` : ''}
               <img src="${prod.img}" class="product-img" alt="${prod.title}">
             </div>
             <div class="product-info">
-              <div class="product-title">${prod.title}</div>
-              <div class="product-price">Rp ${prod.price.toLocaleString('id-ID')}</div>
-              
+              <div>
+                <div class="product-title">${prod.title}</div>
+                <div class="product-price">Rp ${prod.price.toLocaleString('id-ID')}</div>
+                <div class="product-sold">${prod.sold || ''}</div>
+              </div>
               <div class="action-btn-group">
-                <button class="btn-cart" onclick="addToCart('${prod.title}', ${prod.price})">
+                <button class="btn-cart" onclick="addToCart(${prod.id})">
                   <i class="fas fa-cart-plus"></i> + Keranjang
                 </button>
-                <button class="btn-buy-direct" onclick="openCheckout('${prod.title}', ${prod.price})">
-                  Beli
-                </button>
+                <button class="btn-buy-direct" onclick="openCheckout('${prod.title}', ${prod.price})">Beli</button>
               </div>
             </div>
           </div>
@@ -438,17 +567,24 @@
       grid.innerHTML = html;
     }
 
-    // FUNGSI SEARCH SENSOR OTOMATIS
+    function filterCategory(cat, btnElement) {
+      selectedCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      if(btnElement) btnElement.classList.add('active');
+      searchProducts();
+    }
+
     function searchProducts() {
       const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = productsData.filter(p => p.title.toLowerCase().includes(keyword));
+      const filtered = productsData.filter(p => {
+        const matchesCategory = (selectedCategory === 'semua') || (p.category === selectedCategory);
+        const matchesKeyword = p.title.toLowerCase().includes(keyword);
+        return matchesCategory && matchesKeyword;
+      });
       renderProducts(filtered);
     }
 
-    // KERANJANG SEMENTARA
-    function getCartItems() {
-      return JSON.parse(localStorage.getItem('sopy_cart') || '[]');
-    }
+    function getCartItems() { return JSON.parse(localStorage.getItem('sopy_cart') || '[]'); }
 
     function saveCartItems(cart) {
       localStorage.setItem('sopy_cart', JSON.stringify(cart));
@@ -457,36 +593,52 @@
 
     function updateCartBadge() {
       const cart = getCartItems();
-      document.getElementById('topCartBadge').innerText = cart.length;
+      const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
+      document.getElementById('topCartBadge').innerText = totalCount;
     }
 
-    function addToCart(title, price) {
+    function addToCart(prodId) {
+      const prod = productsData.find(p => p.id === prodId);
+      if(!prod) return;
+
       const cart = getCartItems();
-      cart.push({ title, price });
+      const existing = cart.find(c => c.id === prodId);
+
+      if (existing) { existing.qty += 1; } 
+      else { cart.push({ id: prod.id, title: prod.title, price: prod.price, img: prod.img, qty: 1 }); }
+      
       saveCartItems(cart);
-      alert('Barang berhasil disimpan di Keranjang!');
     }
 
+    /* BUKA MODAL KERANJANG LENGKAP DENGAN TOMBOL PLUS & MINUS */
     function openCartModal() {
       const cart = getCartItems();
       const container = document.getElementById('cartItemsList');
       let total = 0;
 
       if (cart.length === 0) {
-        container.innerHTML = `<div style="color:#888; text-align:center; padding: 20px 0; font-size:12px;">Keranjang kamu masih kosong.</div>`;
+        container.innerHTML = `<div style="color:#888; text-align:center; padding: 20px 0; font-size:12px;">Keranjang kamu kosong.</div>`;
         document.getElementById('cartFooter').style.display = 'none';
       } else {
         document.getElementById('cartFooter').style.display = 'block';
         let html = '';
         cart.forEach((item, idx) => {
-          total += item.price;
+          total += (item.price * item.qty);
           html += `
             <div class="cart-item">
-              <div>
+              <img src="${item.img}" class="cart-item-img" alt="${item.title}">
+              <div class="cart-item-info">
                 <div class="cart-item-title">${item.title}</div>
                 <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                
+                <!-- KONTROL NIKMATI / TAMBAH KUANTITAS -->
+                <div class="cart-qty-control">
+                  <div class="qty-btn" onclick="changeQty(${idx}, -1)">-</div>
+                  <span class="qty-number">${item.qty}</span>
+                  <div class="qty-btn" onclick="changeQty(${idx}, 1)">+</div>
+                </div>
               </div>
-              <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:#f44336; cursor:pointer;"><i class="fas fa-trash"></i></button>
+              <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:#f44336; cursor:pointer; font-size:14px;"><i class="fas fa-trash"></i></button>
             </div>
           `;
         });
@@ -497,9 +649,22 @@
       document.getElementById('cartModal').style.display = 'block';
     }
 
-    function closeCartModal() {
-      document.getElementById('cartModal').style.display = 'none';
+    /* UBAH KUANTITAS (+) ATAU (-) */
+    function changeQty(idx, delta) {
+      const cart = getCartItems();
+      if (!cart[idx]) return;
+
+      cart[idx].qty += delta;
+
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+
+      saveCartItems(cart);
+      openCartModal(); // Refresh tampilan modal
     }
+
+    function closeCartModal() { document.getElementById('cartModal').style.display = 'none'; }
 
     function removeFromCart(idx) {
       const cart = getCartItems();
@@ -511,23 +676,10 @@
     function checkoutFromCart() {
       const cart = getCartItems();
       if (cart.length === 0) return;
-      
-      let total = cart.reduce((acc, curr) => acc + curr.price, 0);
-      let titles = cart.map(c => c.title).join(', ');
-
+      let total = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      let titles = cart.map(c => `${c.title} (x${c.qty})`).join(', ');
       closeCartModal();
       openCheckout(titles, total);
-    }
-
-    // PREVIEW GAMBAR
-    function previewImage(url, title) {
-      document.getElementById('previewImgSrc').src = url;
-      document.getElementById('previewTitle').innerText = title;
-      document.getElementById('imageModal').style.display = 'block';
-    }
-
-    function closeImagePreview() {
-      document.getElementById('imageModal').style.display = 'none';
     }
 
     function openCheckout(title, price) {
@@ -536,9 +688,7 @@
       document.getElementById('checkoutModal').style.display = 'block';
     }
 
-    function closeCheckout() {
-      document.getElementById('checkoutModal').style.display = 'none';
-    }
+    function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
 
     function submitOrder(e) {
       e.preventDefault();
@@ -573,12 +723,10 @@
 
     function openProfileModal() {
       document.getElementById('profileModal').style.display = 'block';
-      filterOrders('Semua');
+      filterOrders('Belum Dibayar');
     }
 
-    function closeProfileModal() {
-      document.getElementById('profileModal').style.display = 'none';
-    }
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
 
     function filterOrders(status) {
       const orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
@@ -597,23 +745,98 @@
 
       let html = '';
       filtered.forEach(ord => {
-        let color = '#f44336';
-        if (ord.paymentStatus === 'Dikemas') color = '#ff9800';
-        if (ord.paymentStatus === 'Dikirim') color = '#2196f3';
-        if (ord.paymentStatus === 'Selesai') color = '#4caf50';
+        let badgeBg = '#f44336';
+        if (ord.paymentStatus === 'Dikemas') badgeBg = '#ff9800';
+        if (ord.paymentStatus === 'Dikirim') badgeBg = '#2196f3';
+        if (ord.paymentStatus === 'Selesai') badgeBg = '#4caf50';
 
         html += `
           <div class="order-item-card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="color:var(--slot-gold); font-weight:bold;">${ord.id}</span>
-              <span class="badge-status" style="background:${color}; color:#fff;">${ord.paymentStatus}</span>
+              <span class="badge-status" style="background:${badgeBg}; color:#fff;">${ord.paymentStatus}</span>
             </div>
-            <div style="color:#fff; margin-top:6px;"><b>${ord.productName}</b></div>
+            <div style="color:#fff; margin-top:6px; font-weight:bold;">${ord.productName}</div>
             <div style="color:#aaa; margin-top:2px;">Total: Rp ${ord.totalPrice.toLocaleString('id-ID')}</div>
+            
+            ${ord.paymentStatus === 'Belum Dibayar' ? `
+              <div style="display:flex; justify-content:flex-end; margin-top:10px; border-top:1px solid #222; padding-top:8px;">
+                <button class="btn-pay-now" onclick="openPayNowModal('${ord.id}', '${ord.productName}', ${ord.totalPrice})">
+                  <i class="fas fa-credit-card"></i> Bayar Sekarang
+                </button>
+              </div>
+            ` : ''}
           </div>
         `;
       });
       container.innerHTML = html;
+    }
+
+    function openPayNowModal(orderId, productName, price) {
+      currentPayOrderId = orderId;
+      document.getElementById('payOrderInfo').innerHTML = `
+        <div style="border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 6px;">
+          <b>ID Pesanan:</b> <span style="color:var(--slot-gold);">${orderId}</span>
+        </div>
+        <div><b>Barang:</b> ${productName}</div>
+        <div style="margin-top:2px;"><b>Total Pembayaran:</b> <span style="color:var(--slot-gold); font-weight:bold;">Rp ${price.toLocaleString('id-ID')}</span></div>
+      `;
+      document.getElementById('payNowModal').style.display = 'block';
+    }
+
+    function closePayNowModal() {
+      document.getElementById('payNowModal').style.display = 'none';
+    }
+
+    function updatePayInstruction() {
+      const method = document.getElementById('payMethodSelect').value;
+      const box = document.getElementById('bankInstruction');
+
+      if (method === 'bca') {
+        box.innerHTML = `
+          <div style="font-size:11px; color:#aaa;">Nomor BCA Virtual Account:</div>
+          <div style="font-size:16px; font-weight:bold; color:var(--slot-gold); margin:4px 0;">8830 0812 3456 7890</div>
+          <div style="font-size:10px; color:#888;">a.n Sopy Online Shop Official</div>
+        `;
+      } else if (method === 'mandiri') {
+        box.innerHTML = `
+          <div style="font-size:11px; color:#aaa;">Nomor Mandiri Rekening:</div>
+          <div style="font-size:16px; font-weight:bold; color:var(--slot-gold); margin:4px 0;">13700 9876 5432 1</div>
+          <div style="font-size:10px; color:#888;">a.n Sopy Online Shop Official</div>
+        `;
+      } else {
+        box.innerHTML = `
+          <div style="font-size:11px; color:#aaa;">Scan Kode QRIS berikut:</div>
+          <div style="text-align:center; padding:8px 0;">
+            <i class="fas fa-qrcode" style="font-size:60px; color:#fff;"></i>
+          </div>
+          <div style="font-size:10px; color:#aaa; text-align:center;">Mendukung All E-Wallet / Mobile Banking</div>
+        `;
+      }
+    }
+
+    function confirmPaymentProcess() {
+      let orders = JSON.parse(localStorage.getItem('sopy_orders') || '[]');
+      const index = orders.findIndex(o => o.id === currentPayOrderId);
+
+      if (index !== -1) {
+        orders[index].paymentStatus = 'Dikemas';
+        localStorage.setItem('sopy_orders', JSON.stringify(orders));
+        alert('Pembayaran berhasil dikonfirmasi! Pesanan Anda sekarang dalam status "Dikemas".');
+        closePayNowModal();
+        filterOrders('Dikemas');
+      }
+    }
+
+    function previewMedia(url, title) {
+      const container = document.getElementById('previewMediaContainer');
+      document.getElementById('previewTitle').innerText = title;
+      container.innerHTML = `<img src="${url}" class="preview-media-full" alt="Preview">`;
+      document.getElementById('imageModal').style.display = 'block';
+    }
+
+    function closeMediaPreview() {
+      document.getElementById('imageModal').style.display = 'none';
     }
 
     function switchTab(el) {
@@ -621,7 +844,8 @@
       el.classList.add('active');
     }
 
-    // INIT INITIAL LOAD
+    // INITIALIZATION
+    initDefaultOrders();
     renderProducts(productsData);
     updateCartBadge();
   </script>
